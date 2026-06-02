@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OD (0) DO (9) – Łamigłówka logiczna</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>🔢 OD (0) DO (9)</h1>
+
+        <div class="rules-box">
+            <strong>Zasady:</strong>
+            <ul>
+                <li>W każdym <strong>wierszu</strong> cyfry muszą być <strong>unikalne</strong> (wybrane spośród 0–9).</li>
+                <li>W <strong>kolumnach</strong> cyfry mogą się powtarzać, ale <strong>identyczne cyfry nie mogą stykać się bokiem ani rogiem</strong> (8 kierunków sąsiedztwa).</li>
+                <li>Dolny wiersz (szare tło) pokazuje <strong>sumy liczb w każdej kolumnie</strong> – możesz je edytować, by stworzyć własną łamigłówkę.</li>
+                <li>Wpisz cyfry w puste pola, przestrzegając wszystkich reguł.</li>
+            </ul>
+        </div>
+
+        <div class="controls-row">
+            <label>Wysokość (H):
+                <select id="selectH">
+                    <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                    <option value="6" selected>6</option><option value="7">7</option><option value="8">8</option>
+                    <option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                </select>
+            </label>
+            <label>Szerokość (W):
+                <select id="selectW">
+                    <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                    <option value="6" selected>6</option><option value="7">7</option><option value="8">8</option>
+                    <option value="9">9</option><option value="10">10</option>
+                </select>
+            </label>
+            <button class="primary" id="btnGenerate" title="Generuj łamigłówkę z częściowo ukrytymi polami">🎲 Generuj nową</button>
+            <button class="secondary" id="btnGenerateEmpty" title="Generuj całkowicie pustą planszę (tylko sumy kolumn)">📝 Generuj pustą</button>
+        </div>
+
+        <div class="controls-row">
+            <button id="btnCheck" title="Sprawdź poprawność wypełnienia">✅ Sprawdź</button>
+            <button class="accent" id="btnSolve" title="Rozwiąż za mnie (solver)">🤖 Rozwiąż za mnie</button>
+            <button class="danger" id="btnReset" title="Przywróć stan początkowy">🔄 Resetuj</button>
+        </div>
+
+        <div class="grid-wrapper" id="gridWrapper">
+            <div class="board-grid" id="boardGrid"></div>
+            <div class="sums-row" id="sumsRow"></div>
+        </div>
+
+        <div class="status-area neutral" id="statusArea">Gotowy do gry. Możesz edytować sumy kolumn (szare pola).</div>
+        <div class="stats-row" id="statsRow"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

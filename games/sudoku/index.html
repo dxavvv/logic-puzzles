@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku – Łamigłówki logiczne</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <a href="../index.html" class="back-link">← Powrót do menu</a>
+        <h1>🧮 Sudoku</h1>
+
+        <div class="rules-box">
+            <strong>Zasady:</strong>
+            <ul>
+                <li>Wypełnij planszę cyframi od <strong>1</strong> do <strong><span id="maxDigit">9</span></strong>.</li>
+                <li>W każdym <strong>wierszu</strong>, <strong>kolumnie</strong> oraz <strong>bloku</strong> cyfry muszą być <strong>unikalne</strong>.</li>
+                <li>Nie możesz zmieniać początkowych (pogrubionych) cyfr.</li>
+            </ul>
+        </div>
+
+        <div class="controls-row">
+            <label>Rozmiar:
+                <select id="selectSize">
+                    <option value="6">6×6</option>
+                    <option value="9" selected>9×9</option>
+                    <option value="12">12×12</option>
+                </select>
+            </label>
+            <label>Poziom:
+                <select id="selectDifficulty">
+                    <option value="easy">Łatwy</option>
+                    <option value="medium" selected>Średni</option>
+                    <option value="hard">Trudny</option>
+                </select>
+            </label>
+        </div>
+        <div class="controls-row">
+            <button class="primary" id="btnGenerate">🎲 Nowa gra</button>
+            <button class="secondary" id="btnGenerateEmpty">📝 Pusta plansza</button>
+            <button id="btnCheck">✅ Sprawdź</button>
+            <button class="accent" id="btnSolve">🤖 Rozwiąż</button>
+            <button class="danger" id="btnReset">🔄 Resetuj</button>
+        </div>
+
+        <div class="grid-wrapper">
+            <div class="board-grid" id="boardGrid"></div>
+        </div>
+
+        <div class="status-area neutral" id="statusArea">Wygeneruj planszę lub stwórz pustą.</div>
+        <div class="stats-row" id="statsRow"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

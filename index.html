@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Łamigłówki logiczne</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="bgCanvas"></canvas>
+    <div class="home-container">
+        <header>
+            <h1>🧩 Łamigłówki logiczne</h1>
+            <p class="subtitle">Wybierz grę i wytęż umysł</p>
+        </header>
+
+        <main class="games-grid">
+            <a href="games/od0do9/index.html" class="game-card">
+                <div class="card-icon">🔢</div>
+                <h2>OD (0) DO (9)</h2>
+                <p>Cyfry 0–9, unikalne w wierszach, bez sąsiedztwa identycznych w kolumnach. Sumy kolumn jako podpowiedzi.</p>
+                <span class="card-btn">Graj →</span>
+            </a>
+
+            <a href="games/sudoku/index.html" class="game-card">
+                <div class="card-icon">🧮</div>
+                <h2>Sudoku</h2>
+                <p>Klasyczna łamigłówka 9×9. Wypełnij planszę tak, aby w każdym wierszu, kolumnie i bloku 3×3 znalazły się cyfry od 1 do 9.</p>
+                <span class="card-btn">Graj →</span>
+            </a>
+
+            <!-- Miejsce na kolejne łamigłówki -->
+            <div class="game-card coming-soon">
+                <div class="card-icon">🔜</div>
+                <h2>Wkrótce…</h2>
+                <p>Nowe wyzwania już w przygotowaniu.</p>
+                <span class="card-btn disabled">Już niedługo</span>
+            </div>
+        </main>
+
+        <footer>
+            <p>Miłego rozwiązywania!</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
