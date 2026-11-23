@@ -30,6 +30,7 @@
         for (let r = 0; r < W; r++) for (let c = 0; c < W; c++) {
             if (r % 2 === 0 && c % 2 === 0) {
                 const rr = r / 2, cc = c / 2;
+                if (G.editing) { board.appendChild(G.numCell({ max: N, value: giv[rr][cc], onChange: v => { giv[rr][cc] = v; } })); continue; }
                 const cls = (revealed && !giv[rr][cc] ? ' revealed' : '') + (err.has(rr * N + cc) ? ' error-highlight' : '');
                 board.appendChild(G.cell({ max: N, given: giv[rr][cc], value: cur[rr][cc], cls, onChange: v => { cur[rr][cc] = v; } }));
             } else {
@@ -38,6 +39,14 @@
                 if (r % 2 === 0) { const s = hs[r / 2][(c - 1) / 2]; d.textContent = s === 1 ? '<' : s === -1 ? '>' : ''; }
                 else if (c % 2 === 0) { const s = vs[(r - 1) / 2][c / 2]; d.textContent = s === 1 ? '⋀' : s === -1 ? '⋁' : ''; }
                 d.style.aspectRatio = 'auto';
+                if (G.editing) {
+                    const horiz = r % 2 === 0;
+                    const arr = horiz ? hs : vs;
+                    const i = horiz ? r / 2 : (r - 1) / 2, j = horiz ? (c - 1) / 2 : c / 2;
+                    if (!d.textContent) d.textContent = '·';
+                    d.style.cursor = 'pointer'; d.style.color = '#f0c060';
+                    d.addEventListener('click', () => { arr[i][j] = arr[i][j] === 0 ? 1 : arr[i][j] === 1 ? -1 : 0; render(); });
+                }
                 board.appendChild(d);
             }
         }
@@ -61,11 +70,31 @@
     }
 
     function solve() {
+        if (!sol) { G.noSolution(); return; }
         cur = G.copy(sol);
         revealed = true;
         render();
         G.status('Pokazano przykładowe rozwiązanie.', 'info');
     }
 
-    G.wire({ newGame, check, solve, reset });
+    const edit = {
+        params: () => [{ id: 'n', label: 'Rozmiar n×n', min: 3, max: 9, def: N }],
+        hint: 'Klikaj pola między cyframi, aby ustawić znak < / > (lub ⋀ / ⋁); wpisz też cyfry początkowe, jeśli chcesz.',
+        begin(p, keep) {
+            if (!(keep && p.n === N)) {
+                N = p.n; sol = null;
+                hs = G.grid(N, N - 1, 0); vs = G.grid(N - 1, N, 0);
+                giv = G.grid(N, N, 0);
+            }
+            cur = G.copy(giv); revealed = false;
+            render();
+        },
+        play() {
+            if (G.latinErrors(giv, N, N).size) return 'Cyfry początkowe powtarzają się w wierszu lub kolumnie.';
+            sol = null;
+            return null;
+        }
+    };
+
+    G.wire({ newGame, check, solve, reset, edit });
 })();
