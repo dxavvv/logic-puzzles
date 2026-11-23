@@ -48,6 +48,12 @@
         return go(0) ? g : null;
     }
 
+    function legend() {
+        const digits = Array.from({ length: L }, (_, i) => i + 1);
+        const list = digits.length > 1 ? digits.slice(0, -1).join(', ') + ' i ' + digits[L - 1] : '1';
+        G.$('legend').textContent = `Klepki mają długość ${L}: w każdej cyfry ${list}. W każdym wierszu i kolumnie po ${N / L} razy każda cyfra.`;
+    }
+
     function newGame() {
         N = G.size(6);
         L = N === 8 ? 2 : N === 9 ? 3 : (Math.random() < 0.5 ? 2 : 3);
@@ -59,7 +65,7 @@
         }
         const p = { easy: 0.35, medium: 0.22, hard: 0.12 }[G.level()];
         giv = sol.map(row => row.map(v => (Math.random() < p ? v : 0)));
-        G.$('legend').textContent = `Klepki mają długość ${L}: w każdej cyfry ${L === 2 ? '1 i 2' : '1, 2 i 3'}. W każdym wierszu i kolumnie po ${N / L} razy każda cyfra.`;
+        legend();
         reset();
     }
 
@@ -70,14 +76,34 @@
         G.status('Uzupełnij klepki.');
     }
 
+    let mode = 'layout', orient = 'h';
+
+    function place(r, c) {
+        if (plank[r][c] >= 0) {
+            const id = plank[r][c];
+            for (let x = 0; x < N; x++) for (let y = 0; y < N; y++) if (plank[x][y] === id) plank[x][y] = -1;
+            return;
+        }
+        const cells = Array.from({ length: L }, (_, k) => (orient === 'h' ? [r, c + k] : [r + k, c]));
+        if (cells.some(([x, y]) => x >= N || y >= N || plank[x][y] >= 0)) { G.status('Klepka się tu nie mieści lub zachodzi na inną.', 'error'); return; }
+        const id = 1 + Math.max(-1, ...plank.map(row => Math.max(...row)));
+        cells.forEach(([x, y]) => { plank[x][y] = id; });
+    }
+
     function render(err = new Set()) {
         board.style.gridTemplateColumns = `repeat(${N}, 1fr)`;
         board.innerHTML = '';
         for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
-            const cls = (revealed && !giv[r][c] ? ' revealed' : '') + (err.has(r * N + c) ? ' error-highlight' : '');
-            const d = G.cell({ max: L, given: giv[r][c], value: cur[r][c], cls, onChange: v => { cur[r][c] = v; } });
+            let d;
+            if (G.editing && mode === 'layout') d = G.tap('', '', () => { place(r, c); render(); });
+            else if (G.editing) d = G.numCell({ max: L, value: giv[r][c], onChange: v => { giv[r][c] = v; } });
+            else {
+                const cls = (revealed && !giv[r][c] ? ' revealed' : '') + (err.has(r * N + c) ? ' error-highlight' : '');
+                d = G.cell({ max: L, given: giv[r][c], value: cur[r][c], cls, onChange: v => { cur[r][c] = v; } });
+            }
             const id = plank[r][c];
-            const same = (x, y) => x >= 0 && y >= 0 && x < N && y < N && plank[x][y] === id;
+            if (G.editing && id < 0) d.style.background = '#07070f';
+            const same = (x, y) => x >= 0 && y >= 0 && x < N && y < N && plank[x][y] === id && id >= 0;
             const b = '3px solid #c49a5a', t = '1px solid transparent';
             d.style.borderTop = same(r - 1, c) ? t : b;
             d.style.borderBottom = same(r + 1, c) ? t : b;
@@ -87,7 +113,7 @@
         }
     }
 
-    function check() {
+    function errors(cur) {
         const err = new Set();
         const per = N / L;
         for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
@@ -114,6 +140,11 @@
                 if (colIdx.length > per) colIdx.forEach(x => err.add(x));
             }
         }
+        return err;
+    }
+
+    function check() {
+        const err = errors(cur);
         let empty = 0;
         cur.forEach(r => r.forEach(v => { if (!v) empty++; }));
         if (err.size) { render(err); G.status('Są błędy – zaznaczone pola łamią zasady.', 'error'); }
@@ -122,11 +153,47 @@
     }
 
     function solve() {
+        if (!sol) { G.noSolution(); return; }
         cur = G.copy(sol);
         revealed = true;
         render();
         G.status('Pokazano przykładowe rozwiązanie.', 'info');
     }
 
-    G.wire({ newGame, check, solve, reset });
+    const edit = {
+        params: () => [
+            { id: 'n', label: 'Rozmiar n×n', min: 2, max: 12, def: N },
+            { id: 'l', label: 'Długość klepki', min: 2, max: 4, def: L }
+        ],
+        hint: 'Tryb „Układ”: kliknij pole, aby położyć klepkę w wybranym kierunku (kliknięcie klepki ją zdejmuje). Tryb „Cyfry”: wpisz cyfry początkowe. Rozmiar musi dzielić się przez długość klepki.',
+        tools(box) {
+            G.toolSelect(box, 'Tryb:', [['layout', 'Układ klepek'], ['digits', 'Cyfry']], mode, v => { mode = v; render(); });
+            G.toolSelect(box, 'Kierunek:', [['h', 'poziomo'], ['v', 'pionowo']], orient, v => { orient = v; });
+            G.toolButton(box, '🎲 Losowy układ', () => {
+                if ((N * N) % L) { G.status('Plansza nie dzieli się na klepki tej długości.', 'error'); return; }
+                const t = tile();
+                if (t) { plank = t; render(); }
+            });
+        },
+        begin(p, keep) {
+            if (!(keep && p.n === N && p.l === L)) {
+                N = p.n; L = p.l; sol = null;
+                plank = G.grid(N, N, -1); giv = G.grid(N, N, 0);
+            }
+            cur = G.copy(giv); revealed = false;
+            render();
+        },
+        play() {
+            if (N % L) return `Rozmiar ${N} musi dzielić się przez długość klepki ${L}.`;
+            if (plank.some(row => row.some(v => v < 0))) return 'Klepki muszą pokrywać całą planszę.';
+            const map = new Map();
+            plank = plank.map(row => row.map(v => { if (!map.has(v)) map.set(v, map.size); return map.get(v); }));
+            if (errors(giv).size) return 'Cyfry początkowe łamią zasady (powtórzenia w klepce, sąsiednie jednakowe lub za dużo w wierszu/kolumnie).';
+            sol = null;
+            legend();
+            return null;
+        }
+    };
+
+    G.wire({ newGame, check, solve, reset, edit });
 })();
