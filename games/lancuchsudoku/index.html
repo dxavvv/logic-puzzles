@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Łańcuch sudoku – Łamigłówki logiczne</title>
+    <link rel="stylesheet" href="../../assets/base.css">
+</head>
+<body>
+    <div class="game-container">
+        <a href="../../index.html" class="back-link">← Powrót do menu</a>
+        <h1>🔗 Łańcuch sudoku</h1>
+
+        <div class="rules-box">
+            <strong>Zasady:</strong>
+            <ul>
+                <li>Uzupełnij cyfry tak, aby w każdym <strong>wierszu</strong>, każdej <strong>kolumnie</strong> i każdym <strong>łańcuchu</strong> (obszarze o grubym obrysie) znalazły się wszystkie różne cyfry od 1 do n.</li>
+            </ul>
+        </div>
+
+        <div class="controls-row">
+            <label>Rozmiar:
+                <select id="selectSize">
+                    <option value="6">6×6</option>
+                    <option value="9" selected>9×9</option>
+                </select>
+            </label>
+            <label>Poziom:
+                <select id="selectDifficulty">
+                    <option value="easy">Łatwy</option>
+                    <option value="medium" selected>Średni</option>
+                    <option value="hard">Trudny</option>
+                </select>
+            </label>
+        </div>
+        <div class="controls-row">
+            <button class="primary" id="btnNew">🎲 Nowa gra</button>
+            <button id="btnCheck">✅ Sprawdź</button>
+            <button class="accent" id="btnSolve">🤖 Rozwiąż</button>
+            <button class="danger" id="btnReset">🔄 Resetuj</button>
+        </div>
+
+        <div class="grid-wrapper">
+            <div class="board-grid plain" id="boardGrid"></div>
+        </div>
+        <div class="legend" id="legend"></div>
+        <div class="status-area neutral" id="statusArea"></div>
+        <div class="stats-row" id="statsRow"></div>
+    </div>
+
+    <script src="../../assets/common.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
