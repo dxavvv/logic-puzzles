@@ -1,12 +1,13 @@
 (function () {
     const board = G.$('boardGrid');
-    let N, sol, giv, cur, revealed;
+    let R, C, sol, giv, cur, revealed;
 
     function partition() {
-        const id = G.grid(N, N, -1);
+        const N = R;
+        const id = G.grid(R, C, -1);
         let n = 0;
         const cells = [];
-        for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) cells.push([r, c]);
+        for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) cells.push([r, c]);
         G.shuffle(cells);
         for (const [r, c] of cells) {
             if (id[r][c] !== -1) continue;
@@ -17,7 +18,7 @@
                 const opts = [];
                 for (const [a, b] of cg) for (const [dr, dc] of G.N4) {
                     const x = a + dr, y = b + dc;
-                    if (x >= 0 && y >= 0 && x < N && y < N && id[x][y] === -1) opts.push([x, y]);
+                    if (x >= 0 && y >= 0 && x < R && y < C && id[x][y] === -1) opts.push([x, y]);
                 }
                 if (!opts.length) break;
                 const [x, y] = G.pick(opts);
@@ -30,10 +31,10 @@
             const size = {};
             id.forEach(row => row.forEach(v => { size[v] = (size[v] || 0) + 1; }));
             let merged = false;
-            outer: for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+            outer: for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {
                 for (const [dr, dc] of [[0, 1], [1, 0]]) {
                     const x = r + dr, y = c + dc;
-                    if (x < N && y < N && id[x][y] !== id[r][c] && size[id[x][y]] === size[id[r][c]]) {
+                    if (x < R && y < C && id[x][y] !== id[r][c] && size[id[x][y]] === size[id[r][c]]) {
                         const from = id[x][y], to = id[r][c];
                         id.forEach(row => row.forEach((v, j) => { if (v === from) row[j] = to; }));
                         merged = true; break outer;
@@ -49,7 +50,7 @@
     }
 
     function newGame() {
-        N = G.size(6);
+        R = C = G.size(6);
         do { sol = partition(); } while (!sol);
         const p = { easy: 0.5, medium: 0.36, hard: 0.25 }[G.level()];
         giv = sol.map(row => row.map(v => (Math.random() < p ? v : 0)));
@@ -64,10 +65,11 @@
     }
 
     function render(err = new Set()) {
-        board.style.gridTemplateColumns = `repeat(${N}, 1fr)`;
+        board.style.gridTemplateColumns = `repeat(${C}, 1fr)`;
         board.innerHTML = '';
-        for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
-            const cls = (revealed && !giv[r][c] ? ' revealed' : '') + (err.has(r * N + c) ? ' error-highlight' : '');
+        for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {
+            if (G.editing) { board.appendChild(G.numCell({ max: 9, value: giv[r][c], onChange: v => { giv[r][c] = v; } })); continue; }
+            const cls = (revealed && !giv[r][c] ? ' revealed' : '') + (err.has(r * C + c) ? ' error-highlight' : '');
             board.appendChild(G.cell({ max: 9, given: giv[r][c], value: cur[r][c], cls, onChange: v => { cur[r][c] = v; } }));
         }
     }
@@ -77,7 +79,7 @@
         let empty = 0;
         cur.forEach(r => r.forEach(v => { if (!v) empty++; }));
         for (let v = 1; v <= 9; v++) {
-            const { comps } = G.components(N, N, (r, c) => cur[r][c] === v);
+            const { comps } = G.components(R, C, (r, c) => cur[r][c] === v);
             for (const comp of comps) {
                 const full = comp.length === v;
                 const tooBig = comp.length > v;
@@ -86,10 +88,10 @@
                 if (!full && !tooBig) {
                     for (const [r, c] of comp) for (const [dr, dc] of G.N4) {
                         const x = r + dr, y = c + dc;
-                        if (x >= 0 && y >= 0 && x < N && y < N && !cur[x][y]) open = true;
+                        if (x >= 0 && y >= 0 && x < R && y < C && !cur[x][y]) open = true;
                     }
                 }
-                if (tooBig || (!full && !open)) comp.forEach(([r, c]) => err.add(r * N + c));
+                if (tooBig || (!full && !open)) comp.forEach(([r, c]) => err.add(r * C + c));
             }
         }
         if (err.size) { render(err); G.status('Są błędy – zaznaczone bloki mają zły rozmiar.', 'error'); }
@@ -98,11 +100,27 @@
     }
 
     function solve() {
+        if (!sol) { G.noSolution(); return; }
         cur = G.copy(sol);
         revealed = true;
         render();
         G.status('Pokazano przykładowe rozwiązanie.', 'info');
     }
 
-    G.wire({ newGame, check, solve, reset });
+    const edit = {
+        params: () => [{ id: 'r', label: 'Wiersze', min: 2, max: 14, def: R }, { id: 'c', label: 'Kolumny', min: 2, max: 14, def: C }],
+        hint: 'Wpisz cyfry początkowe (1–9). Cyfra n musi na końcu tworzyć spójny blok dokładnie n pól; puste pola uzupełni gracz.',
+        begin(p, keep) {
+            if (!(keep && p.r === R && p.c === C)) { R = p.r; C = p.c; sol = null; giv = G.grid(R, C, 0); }
+            cur = G.copy(giv); revealed = false;
+            render();
+        },
+        play() {
+            if (!giv.some(row => row.some(v => v))) return 'Wpisz co najmniej jedną cyfrę.';
+            sol = null;
+            return null;
+        }
+    };
+
+    G.wire({ newGame, check, solve, reset, edit });
 })();
