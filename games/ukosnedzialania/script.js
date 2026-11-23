@@ -23,20 +23,31 @@
         return ops(a, b, cl, d).some(([o, v]) => o === op && v === val);
     }
 
+    function validJunctions(g) {
+        const out = [];
+        for (let r = 0; r < N - 1; r++) for (let c = 0; c < N - 1; c++) {
+            const list = ops(g[r][c], g[r][c + 1], g[r + 1][c], g[r + 1][c + 1]);
+            if (list.length) out.push({ r, c, list });
+        }
+        return out;
+    }
+
     function newGame() {
         N = G.size(5);
-        sol = G.latin(N);
-        const keep = { easy: 0.55, medium: 0.4, hard: 0.28 }[G.level()];
+        // wybieramy kwadrat łaciński, który daje najwięcej sensownych kółek
+        let best = null;
+        for (let t = 0; t < 300; t++) {
+            const g = G.latin(N);
+            const v = validJunctions(g);
+            if (!best || v.length > best.v.length) best = { g, v };
+        }
+        sol = best.g;
+        const keep = { easy: 1, medium: 0.8, hard: 0.6 }[G.level()];
         circles = [];
-        const spots = [];
-        for (let r = 0; r < N - 1; r++) for (let c = 0; c < N - 1; c++) spots.push([r, c]);
-        G.shuffle(spots);
-        for (const [r, c] of spots) {
+        for (const j of best.v) {
             if (Math.random() > keep) continue;
-            const list = ops(sol[r][c], sol[r][c + 1], sol[r + 1][c], sol[r + 1][c + 1]);
-            if (!list.length) continue;
-            const [op, val] = G.pick(list);
-            circles.push({ r, c, op, val });
+            const [op, val] = G.pick(j.list);
+            circles.push({ r: j.r, c: j.c, op, val });
         }
         const gp = { easy: 0.2, medium: 0.08, hard: 0 }[G.level()];
         giv = sol.map(row => row.map(v => (Math.random() < gp ? v : 0)));

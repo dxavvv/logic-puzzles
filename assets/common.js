@@ -95,6 +95,36 @@
             }
             return { id, comps };
         },
+        // wypełnia kwadrat łaciński n×n tak, by każdy obszar reg[r][c] (0..n-1) zawierał wszystkie cyfry; zwraca siatkę lub null
+        regionFill(n, reg) {
+            const grid = G.grid(n, n, 0);
+            const rm = Array(n).fill(0), cm = Array(n).fill(0), gm = Array(n).fill(0);
+            const full = (1 << n) - 1;
+            let steps = 0;
+            const pop = x => { let k = 0; while (x) { x &= x - 1; k++; } return k; };
+            const go = filled => {
+                if (filled === n * n) return true;
+                if (++steps > 300000) return false;
+                let br = -1, bc = -1, bn = 99, bm = 0;
+                for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) {
+                    if (grid[r][c]) continue;
+                    const m = ~(rm[r] | cm[c] | gm[reg[r][c]]) & full;
+                    const k = pop(m);
+                    if (k < bn) { bn = k; br = r; bc = c; bm = m; if (!k) return false; }
+                }
+                const ds = [];
+                for (let d = 0; d < n; d++) if (bm & (1 << d)) ds.push(d);
+                for (const d of G.shuffle(ds)) {
+                    grid[br][bc] = d + 1;
+                    rm[br] |= 1 << d; cm[bc] |= 1 << d; gm[reg[br][bc]] |= 1 << d;
+                    if (go(filled + 1)) return true;
+                    grid[br][bc] = 0;
+                    rm[br] &= ~(1 << d); cm[bc] &= ~(1 << d); gm[reg[br][bc]] &= ~(1 << d);
+                }
+                return false;
+            };
+            return go(0) ? grid : null;
+        },
         wire(h) {
             G.h = h;
             const on = (id, fn) => { const e = $(id); if (e && fn) e.addEventListener('click', () => fn()); };
