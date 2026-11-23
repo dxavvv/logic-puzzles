@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obrazek logiczny – Łamigłówki logiczne</title>
+    <link rel="stylesheet" href="../../assets/base.css">
+</head>
+<body>
+    <div class="game-container">
+        <a href="../../index.html" class="back-link">← Powrót do menu</a>
+        <h1>🖼️ Obrazek logiczny</h1>
+
+        <div class="rules-box">
+            <strong>Zasady:</strong>
+            <ul>
+                <li>Kliknij pole, aby je zamalować.</li>
+                <li>Liczby przy wierszu lub kolumnie to <strong>długości bloków</strong> zamalowanych pól, w podanej kolejności. Między blokami musi być co najmniej jedno puste pole.</li>
+            </ul>
+        </div>
+
+        <div class="controls-row">
+            <label>Rozmiar:
+                <select id="selectSize">
+                    <option value="5">5×5</option>
+                    <option value="8" selected>8×8</option>
+                    <option value="10">10×10</option>
+                    <option value="12">12×12</option>
+                </select>
+            </label>
+            <label>Poziom:
+                <select id="selectDifficulty">
+                    <option value="easy">Łatwy</option>
+                    <option value="medium" selected>Średni</option>
+                    <option value="hard">Trudny</option>
+                </select>
+            </label>
+        </div>
+        <div class="controls-row">
+            <button class="primary" id="btnNew">🎲 Nowa gra</button>
+            <button id="btnCheck">✅ Sprawdź</button>
+            <button class="accent" id="btnSolve">🤖 Rozwiąż</button>
+            <button class="danger" id="btnReset">🔄 Resetuj</button>
+        </div>
+
+        <div class="grid-wrapper">
+            <div class="board-grid plain" id="boardGrid"></div>
+        </div>
+        <div class="legend" id="legend"></div>
+        <div class="status-area neutral" id="statusArea"></div>
+        <div class="stats-row" id="statsRow"></div>
+    </div>
+
+    <script src="../../assets/common.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
