@@ -1,9 +1,10 @@
 (function () {
-    const N = 9;
+    let N = 9, bh = 3, bw = 3;
     const board = G.$('boardGrid');
     let sol, giv, cur, lines, lineOf, revealed;
 
-    const boxOf = (r, c) => Math.floor(r / 3) * 3 + Math.floor(c / 3);
+    const boxOf = (r, c) => Math.floor(r / bh) * (N / bw) + Math.floor(c / bw);
+    const dims = n => (n === 4 ? [2, 2] : n === 6 ? [2, 3] : [3, 3]);
 
     function makeLines() {
         const used = G.grid(N, N, -1);
@@ -32,6 +33,7 @@
     }
 
     function newGame() {
+        N = 9; [bh, bw] = dims(N);
         const reg = Array.from({ length: N }, (_, r) => Array.from({ length: N }, (_, c) => boxOf(r, c)));
         sol = G.regionFill(N, reg);
         const m = makeLines();
@@ -48,6 +50,21 @@
         G.status('Uzupełnij planszę.');
     }
 
+    let mode = 'lines', active = -1;
+
+    function paint(r, c) {
+        if (active < 0 || !lines[active]) { lines.push([]); active = lines.length - 1; }
+        const li = lineOf[r][c];
+        if (li >= 0) {
+            lines[li] = lines[li].filter(([x, y]) => x !== r || y !== c);
+            lineOf[r][c] = -1;
+            if (li === active) { render(); return; }
+        }
+        lines[active].push([r, c]);
+        lineOf[r][c] = active;
+        render();
+    }
+
     const HUES = [200, 40, 130, 300, 10, 170, 260, 80];
 
     function render(err = new Set()) {
@@ -55,15 +72,20 @@
         board.innerHTML = '';
         for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
             const cls = (revealed && !giv[r][c] ? ' revealed' : '') + (err.has(r * N + c) ? ' error-highlight' : '');
-            const d = G.cell({ max: N, given: giv[r][c], value: cur[r][c], cls, onChange: v => { cur[r][c] = v; } });
+            let d;
+            if (G.editing && mode === 'lines') d = G.tap('', '', () => paint(r, c));
+            else if (G.editing) d = G.numCell({ max: N, value: giv[r][c], onChange: v => { giv[r][c] = v; } });
+            else d = G.cell({ max: N, given: giv[r][c], value: cur[r][c], cls, onChange: v => { cur[r][c] = v; } });
             const li = lineOf[r][c];
+            if (G.editing && mode === 'lines') d.style.cursor = 'pointer';
+            if (G.editing && li === active) d.style.outline = '2px solid #f0c060';
             if (li >= 0 && !err.has(r * N + c) && !revealed) {
                 d.style.background = `hsl(${HUES[li % HUES.length]} 45% 22%)`;
                 d.style.borderColor = `hsl(${HUES[li % HUES.length]} 55% 45%)`;
             }
             // pogrubione granice bloków 3×3
-            if (r % 3 === 0 && r > 0) d.style.marginTop = '2px';
-            if (c % 3 === 0 && c > 0) d.style.marginLeft = '2px';
+            if (r % bh === 0 && r > 0) d.style.marginTop = '2px';
+            if (c % bw === 0 && c > 0) d.style.marginLeft = '2px';
             board.appendChild(d);
         }
     }
@@ -93,11 +115,61 @@
     }
 
     function solve() {
+        if (!sol) { G.noSolution(); return; }
         cur = G.copy(sol);
         revealed = true;
         render();
         G.status('Pokazano przykładowe rozwiązanie.', 'info');
     }
 
-    G.wire({ newGame, check, solve, reset });
+    const snap = n => (n <= 5 ? 4 : n <= 7 ? 6 : 9);
+
+    const edit = {
+        params: () => [{ id: 'n', label: 'Rozmiar (4, 6 lub 9)', min: 4, max: 9, def: N }],
+        hint: 'Tryb „Linie”: kliknij pola, aby dodać je do aktywnej linii (ponowne kliknięcie zdejmuje pole z linii); „Nowa linia” zaczyna kolejną. Cyfry na linii muszą tworzyć ciąg kolejnych liczb. Tryb „Cyfry”: wpisz cyfry początkowe. Rozmiar: 4 (bloki 2×2), 6 (2×3) lub 9 (3×3).',
+        tools(box) {
+            G.toolSelect(box, 'Tryb:', [['lines', 'Linie'], ['digits', 'Cyfry']], mode, v => { mode = v; render(); });
+            G.toolButton(box, '➕ Nowa linia', () => { lines.push([]); active = lines.length - 1; render(); });
+        },
+        begin(p, keep) {
+            const n = snap(p.n);
+            const inp = G.$('ep_n'); if (inp) inp.value = n;
+            if (!(keep && n === N)) {
+                N = n; [bh, bw] = dims(N); sol = null;
+                lines = []; lineOf = G.grid(N, N, -1); giv = G.grid(N, N, 0); active = -1;
+            }
+            cur = G.copy(giv); revealed = false;
+            render();
+        },
+        play() {
+            const kept = lines.filter(l => l.length);
+            for (const l of kept) {
+                if (l.length < 2) return 'Każda linia musi mieć co najmniej 2 pola.';
+                if (l.length > N) return `Linia nie może mieć więcej niż ${N} pól.`;
+                const m = G.grid(N, N, 0);
+                l.forEach(([r, c]) => { m[r][c] = 1; });
+                if (G.components(N, N, (r, c) => m[r][c]).comps.length !== 1) return 'Każda linia musi być spójna (pola stykają się bokami).';
+            }
+            const err = G.latinErrors(giv, N, N);
+            const seen = new Set();
+            for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) if (giv[r][c]) {
+                const k = boxOf(r, c) + ':' + giv[r][c];
+                if (seen.has(k)) err.add(1);
+                seen.add(k);
+            }
+            if (err.size) return 'Cyfry początkowe łamią zasady sudoku (powtórzenie w wierszu, kolumnie lub bloku).';
+            for (const l of kept) {
+                const vals = l.map(([r, c]) => giv[r][c]).filter(Boolean);
+                if (new Set(vals).size !== vals.length) return 'Cyfry na jednej linii nie mogą się powtarzać.';
+                if (vals.length && Math.max(...vals) - Math.min(...vals) >= l.length) return 'Cyfry początkowe na linii nie mogą się zmieścić w ciągu kolejnych liczb.';
+            }
+            lines = kept;
+            lineOf = G.grid(N, N, -1);
+            lines.forEach((l, i) => l.forEach(([r, c]) => { lineOf[r][c] = i; }));
+            sol = null; active = -1;
+            return null;
+        }
+    };
+
+    G.wire({ newGame, check, solve, reset, edit });
 })();
