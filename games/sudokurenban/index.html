@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Renban – Łamigłówki logiczne</title>
+    <link rel="stylesheet" href="../../assets/base.css">
+</head>
+<body>
+    <div class="game-container">
+        <a href="../../index.html" class="back-link">← Powrót do menu</a>
+        <h1>🔟 Sudoku Renban</h1>
+
+        <div class="rules-box">
+            <strong>Zasady:</strong>
+            <ul>
+                <li>Wpisz cyfry od 1 do 9 tak, aby w każdym wierszu, kolumnie i bloku 3×3 wystąpiły raz.</li>
+                <li>W <strong>zaznaczonych obszarach</strong> (ciągi pól) cyfry nie mogą się powtarzać i muszą tworzyć zbiór kolejnych liczb ustawionych w dowolnej kolejności (np. 4, 6, 5).</li>
+            </ul>
+        </div>
+
+        <div class="controls-row">
+            <select id="selectSize" hidden><option value="9" selected></option></select>
+            <label>Poziom:
+                <select id="selectDifficulty">
+                    <option value="easy">Łatwy</option>
+                    <option value="medium" selected>Średni</option>
+                    <option value="hard">Trudny</option>
+                </select>
+            </label>
+        </div>
+        <div class="controls-row">
+            <button class="primary" id="btnNew">🎲 Nowa gra</button>
+            <button id="btnCheck">✅ Sprawdź</button>
+            <button class="accent" id="btnSolve">🤖 Rozwiąż</button>
+            <button class="danger" id="btnReset">🔄 Resetuj</button>
+        </div>
+
+        <div class="grid-wrapper">
+            <div class="board-grid plain" id="boardGrid"></div>
+        </div>
+        <div class="legend" id="legend"></div>
+        <div class="status-area neutral" id="statusArea"></div>
+        <div class="stats-row" id="statsRow"></div>
+    </div>
+
+    <script src="../../assets/common.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
