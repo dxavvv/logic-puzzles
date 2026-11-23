@@ -125,15 +125,128 @@
             };
             return go(0) ? grid : null;
         },
+        // pole na liczbę 0..max (puste = 0); używane w edytorze własnych plansz
+        numCell({ max, value, cls = '', onChange, ph = '', min = 1, empty = 0 }) {
+            const d = document.createElement('div');
+            d.className = 'cell empty edit ' + cls;
+            const i = document.createElement('input');
+            i.type = 'text'; i.inputMode = 'numeric'; i.maxLength = String(max).length; i.autocomplete = 'off';
+            if (ph) i.placeholder = ph;
+            if (value !== empty && value != null) i.value = value;
+            i.addEventListener('input', () => {
+                const t = i.value.replace(/[^0-9]/g, '');
+                const n = t === '' ? NaN : parseInt(t, 10);
+                const ok = n >= min && n <= max;
+                i.value = ok ? String(n) : '';
+                onChange(ok ? n : empty);
+            });
+            d.appendChild(i);
+            return d;
+        },
+        // drobne kontrolki do paska narzędzi edytora
+        toolButton(box, text, fn) {
+            const b = document.createElement('button');
+            b.textContent = text; b.addEventListener('click', fn); box.appendChild(b); return b;
+        },
+        toolSelect(box, label, options, value, fn) {
+            const l = document.createElement('label');
+            l.textContent = label + ' ';
+            const sel = document.createElement('select');
+            options.forEach(([v, t]) => {
+                const o = document.createElement('option');
+                o.value = v; o.textContent = t; if (String(v) === String(value)) o.selected = true;
+                sel.appendChild(o);
+            });
+            sel.addEventListener('change', () => fn(sel.value));
+            l.appendChild(sel); box.appendChild(l); return sel;
+        },
+        toolNumber(box, label, min, max, value, fn) {
+            const l = document.createElement('label');
+            l.textContent = label + ' ';
+            const i = document.createElement('input');
+            i.type = 'number'; i.min = min; i.max = max; i.value = value;
+            i.addEventListener('input', () => { const v = parseInt(i.value, 10); fn(v >= min && v <= max ? v : 0); });
+            l.appendChild(i); box.appendChild(l); return i;
+        },
+        editing: false,
+        custom: false,
         wire(h) {
             G.h = h;
             const on = (id, fn) => { const e = $(id); if (e && fn) e.addEventListener('click', () => fn()); };
+            const baseNew = h.newGame;
+            h.newGame = () => { G.exitEdit(false); G.custom = false; baseNew(); };
             on('btnNew', h.newGame); on('btnCheck', h.check); on('btnSolve', h.solve); on('btnReset', h.reset);
             ['selectSize', 'selectDifficulty'].forEach(id => {
                 const e = $(id); if (e) e.addEventListener('change', () => h.newGame());
             });
+            if (h.edit) G.setupEdit(h);
             h.newGame();
-        }
+        },
+        // --- edytor własnych plansz ---
+        setupEdit(h) {
+            const row = $('btnNew') && $('btnNew').parentNode;
+            if (!row) return;
+            const hide = ['btnNew', 'btnCheck', 'btnSolve', 'btnReset'];
+            const btn = document.createElement('button');
+            btn.id = 'btnEdit'; btn.textContent = '✏️ Własna plansza';
+            row.appendChild(btn);
+            const panel = document.createElement('div');
+            panel.className = 'edit-panel'; panel.id = 'editPanel'; panel.hidden = true;
+            panel.innerHTML = '<div class="edit-title">✏️ Ułóż własną planszę</div>' +
+                '<div class="controls-row" id="editParams"></div>' +
+                '<div class="controls-row" id="editTools"></div>' +
+                '<div class="edit-hint" id="editHint"></div>' +
+                '<div class="controls-row"><button class="primary" id="btnPlay">▶ Zagraj</button>' +
+                '<button id="btnClearEdit">🧹 Wyczyść</button><button class="danger" id="btnCancelEdit">✖ Anuluj</button></div>';
+            row.parentNode.insertBefore(panel, row.nextSibling);
+            const read = () => {
+                const p = {};
+                (G._params || []).forEach(q => {
+                    const e = $('ep_' + q.id);
+                    let v = parseInt(e.value, 10);
+                    if (!(v >= q.min)) v = q.min;
+                    if (v > q.max) v = q.max;
+                    e.value = v; p[q.id] = v;
+                });
+                return p;
+            };
+            G.exitEdit = () => {
+                G.editing = false; panel.hidden = true;
+                hide.forEach(id => { const e = $(id); if (e) e.style.display = ''; });
+                btn.style.display = '';
+            };
+            const enter = () => {
+                G.editing = true; panel.hidden = false;
+                hide.forEach(id => { const e = $(id); if (e) e.style.display = 'none'; });
+                btn.style.display = 'none';
+                G._params = h.edit.params();
+                const box = $('editParams'); box.innerHTML = '';
+                G._params.forEach(q => {
+                    const l = document.createElement('label');
+                    l.textContent = q.label + ': ';
+                    const i = document.createElement('input');
+                    i.type = 'number'; i.id = 'ep_' + q.id; i.min = q.min; i.max = q.max; i.value = q.def;
+                    i.addEventListener('change', () => h.edit.begin(read(), false));
+                    l.appendChild(i); box.appendChild(l);
+                });
+                $('editHint').textContent = h.edit.hint;
+                const tb = $('editTools'); tb.innerHTML = '';
+                if (h.edit.tools) h.edit.tools(tb);
+                h.edit.begin(read(), true);
+                G.status('Tryb edycji: ' + h.edit.hint, 'info');
+            };
+            btn.addEventListener('click', enter);
+            $('btnClearEdit').addEventListener('click', () => h.edit.begin(read(), false));
+            $('btnCancelEdit').addEventListener('click', () => h.newGame());
+            $('btnPlay').addEventListener('click', () => {
+                const err = h.edit.play(read());  // sprawdza i zapisuje stan, bez rysowania
+                if (err) { G.status(err, 'error'); return; }
+                G.exitEdit(); G.custom = true; h.reset();
+                G.status('Własna plansza – powodzenia! (Przycisk „Rozwiąż” nie jest dla niej dostępny).', 'info');
+            });
+        },
+        exitEdit() { },
+        noSolution() { G.status('Dla własnej planszy nie ma rozwiązania wzorcowego – sprawdź ją przyciskiem „Sprawdź”.', 'info'); }
     };
     window.G = G;
 })();

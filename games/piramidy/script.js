@@ -37,15 +37,20 @@
             for (let c = -1; c <= N; c++) {
                 const inR = r >= 0 && r < N, inC = c >= 0 && c < N;
                 if (!inR || !inC) {
+                    let arr = null, i = 0;
+                    if (r < 0 && inC) { arr = cl.t; i = c; }
+                    else if (r >= N && inC) { arr = cl.b; i = c; }
+                    else if (c < 0 && inR) { arr = cl.l; i = r; }
+                    else if (c >= N && inR) { arr = cl.r; i = r; }
+                    if (G.editing && arr) { board.appendChild(G.numCell({ max: N, value: arr[i], onChange: v => { arr[i] = v; } })); continue; }
                     const d = document.createElement('div');
                     d.className = 'clue';
-                    let v = 0;
-                    if (r < 0 && inC) v = cl.t[c];
-                    else if (r >= N && inC) v = cl.b[c];
-                    else if (c < 0 && inR) v = cl.l[r];
-                    else if (c >= N && inR) v = cl.r[r];
-                    d.textContent = v || '';
+                    d.textContent = (arr && arr[i]) || '';
                     board.appendChild(d);
+                    continue;
+                }
+                if (G.editing) {
+                    board.appendChild(G.numCell({ max: N, value: giv[r][c], onChange: v => { giv[r][c] = v; } }));
                     continue;
                 }
                 const cls = (revealed && !giv[r][c] ? ' revealed' : '') + (err.has(r * N + c) ? ' error-highlight' : '');
@@ -79,11 +84,31 @@
     }
 
     function solve() {
+        if (!sol) { G.noSolution(); return; }
         cur = G.copy(sol);
         revealed = true;
         render();
         G.status('Pokazano przykładowe rozwiązanie.', 'info');
     }
 
-    G.wire({ newGame, check, solve, reset });
+    const edit = {
+        params: () => [{ id: 'n', label: 'Rozmiar n×n', min: 3, max: 9, def: N }],
+        hint: 'Wpisz liczby widocznych piramid przy brzegach (puste = brak wskazówki) oraz, jeśli chcesz, cyfry początkowe w polach.',
+        begin(p, keep) {
+            if (!(keep && p.n === N)) {
+                N = p.n; sol = null;
+                cl = { t: Array(N).fill(0), b: Array(N).fill(0), l: Array(N).fill(0), r: Array(N).fill(0) };
+                giv = G.grid(N, N, 0);
+            }
+            cur = G.copy(giv); revealed = false;
+            render();
+        },
+        play() {
+            if (G.latinErrors(giv, N, N).size) return 'Cyfry początkowe powtarzają się w wierszu lub kolumnie.';
+            sol = null;
+            return null;
+        }
+    };
+
+    G.wire({ newGame, check, solve, reset, edit });
 })();
