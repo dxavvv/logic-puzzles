@@ -48,6 +48,7 @@
         board.innerHTML = '';
         for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
             const err = errCells.has(r * N + c) ? ' error-highlight' : '';
+            if (G.editing) { board.appendChild(G.numCell({ max: 4 * N, value: num[r][c], onChange: v => { num[r][c] = v; } })); continue; }
             if (num[r][c]) {
                 const d = document.createElement('div');
                 d.className = 'cell given' + err;
@@ -78,10 +79,22 @@
     }
 
     function solve() {
+        if (!sol) { G.noSolution(); return; }
         cur = G.copy(sol); revealed = true; errCells = new Set();
         render();
         G.status('Pokazano przykładowe rozwiązanie.', 'info');
     }
 
-    G.wire({ newGame, check, solve, reset });
+    const edit = {
+        params: () => [{ id: 'n', label: 'Rozmiar n×n', min: 3, max: 14, def: N }],
+        hint: 'Wpisz w polach liczby (ile pól widać z wieży: samo pole + pola w czterech kierunkach do zamalowanego). Puste pola zostaną do uzupełnienia.',
+        begin(p, keep) {
+            if (!(keep && p.n === N)) { N = p.n; sol = null; num = G.grid(N, N, 0); }
+            cur = G.grid(N, N, 0); revealed = false; errCells = new Set();
+            render();
+        },
+        play() { sol = null; return null; }
+    };
+
+    G.wire({ newGame, check, solve, reset, edit });
 })();
