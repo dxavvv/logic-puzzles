@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zgaś światła – Łamigłówki logiczne</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <a href="../../index.html" class="back-link">← Powrót do menu</a>
+        <h1>💡 Zgaś światła</h1>
+
+        <div class="rules-box">
+            <strong>Zasady:</strong>
+            <ul>
+                <li>Kliknięcie lampki przełącza ją oraz jej <strong>cztery sąsiednie</strong> lampki (góra, dół, lewo, prawo).</li>
+                <li>Celem jest <strong>zgaszenie wszystkich</strong> świateł.</li>
+                <li>Każda plansza jest rozwiązywalna – spróbuj zrobić to w jak najmniejszej liczbie ruchów.</li>
+            </ul>
+        </div>
+
+        <div class="controls-row">
+            <label>Rozmiar:
+                <select id="selectSize">
+                    <option value="3">3×3</option>
+                    <option value="4">4×4</option>
+                    <option value="5" selected>5×5</option>
+                    <option value="6">6×6</option>
+                    <option value="7">7×7</option>
+                </select>
+            </label>
+            <button class="primary" id="btnNew">🎲 Nowa gra</button>
+            <button id="btnHint">💡 Podpowiedź</button>
+            <button class="danger" id="btnReset">🔄 Resetuj</button>
+        </div>
+
+        <div class="grid-wrapper">
+            <div class="board-grid lights" id="boardGrid"></div>
+        </div>
+
+        <div class="status-area neutral" id="statusArea"></div>
+        <div class="stats-row" id="statsRow"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
