@@ -40,6 +40,19 @@ Kolejne gry pojawiają się regularnie.
 2. Wybierz grę z listy.
 3. Przeczytaj zasady na górze ekranu i baw się dobrze — działa na komputerze i telefonie.
 
+## ✏️ Własne łamigłówki
+
+Większość gier ma przycisk **„✏️ Własna plansza”**. Pozwala on ułożyć własny wariant:
+
+- wybierasz **dowolną liczbę wierszy i kolumn** (albo rozmiar `n×n` dla gier z kwadratem łacińskim),
+- sam wpisujesz **wskazówki i liczby** (np. sumy przy brzegach, cyfry początkowe, liczby w polach),
+- w grach z obszarami, liniami lub klepkami **rysujesz je sam** (Działania, Łańcuch sudoku, Sudoku Renban, Parkiet, Krzyżówka liczbowa),
+- klikasz **▶ Zagraj** i rozwiązujesz własną planszę – gra sprawdza ją według zasad.
+
+Przycisk „Rozwiąż” nie działa dla własnych plansz (nie ma rozwiązania wzorcowego), za to „Sprawdź” podpowiada błędy.
+Jeśli zaczniesz edycję w trakcie gry, plansza startuje od bieżącej łamigłówki, więc możesz ją po prostu zmodyfikować.
+W **Zgaś światła**, **Sudoku** i **OD (0) DO (9)** własne układy są dostępne w ich własnych panelach.
+
 ## 💻 Uruchomienie lokalne
 
 Projekt to czysty HTML, CSS i JavaScript — nie wymaga budowania ani zależności.
@@ -70,6 +83,7 @@ python -m http.server 8000   # następnie http://localhost:8000
 1. Utwórz katalog `games/<nazwa-gry>/` z plikami `index.html`, `style.css` i `script.js`.
 2. Dodaj link powrotu (`../../index.html`) oraz krótki opis zasad.
 3. Dodaj kartę gry w głównym `index.html` i wpis w tabeli powyżej.
+4. Opcjonalnie przekaż w `G.wire({ ..., edit })` obiekt edytora (`params`, `begin`, `play`), aby gra dostała przycisk „Własna plansza”.
 
 ## 🌐 Hosting
 
