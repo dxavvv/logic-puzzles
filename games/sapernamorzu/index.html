@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saper na morzu – Łamigłówki logiczne</title>
+    <link rel="stylesheet" href="../../assets/base.css">
+</head>
+<body>
+    <div class="game-container">
+        <a href="../../index.html" class="back-link">← Powrót do menu</a>
+        <h1>⚓ Saper na morzu</h1>
+
+        <div class="rules-box">
+            <strong>Zasady:</strong>
+            <ul>
+                <li>Kliknij pole, aby postawić lub zdjąć element okrętu. Pola z cyframi pozostają puste.</li>
+                <li>Użyj dokładnie <strong>okrętów pokazanych pod planszą</strong> (proste, 1×n). Okręty nie mogą się stykać bokiem ani rogiem.</li>
+                <li>Cyfra mówi, na ilu z <strong>8 sąsiednich</strong> pól znajdują się okręty.</li>
+            </ul>
+        </div>
+
+        <div class="controls-row">
+            <label>Rozmiar:
+                <select id="selectSize">
+                    <option value="6">6×6</option>
+                    <option value="7" selected>7×7</option>
+                    <option value="8">8×8</option>
+                </select>
+            </label>
+            <label>Poziom:
+                <select id="selectDifficulty">
+                    <option value="easy">Łatwy</option>
+                    <option value="medium" selected>Średni</option>
+                    <option value="hard">Trudny</option>
+                </select>
+            </label>
+        </div>
+        <div class="controls-row">
+            <button class="primary" id="btnNew">🎲 Nowa gra</button>
+            <button id="btnCheck">✅ Sprawdź</button>
+            <button class="accent" id="btnSolve">🤖 Rozwiąż</button>
+            <button class="danger" id="btnReset">🔄 Resetuj</button>
+        </div>
+
+        <div class="grid-wrapper">
+            <div class="board-grid plain" id="boardGrid"></div>
+        </div>
+        <div class="legend" id="legend"></div>
+        <div class="status-area neutral" id="statusArea"></div>
+        <div class="stats-row" id="statsRow"></div>
+    </div>
+
+    <script src="../../assets/common.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
