@@ -143,6 +143,17 @@
             d.appendChild(i);
             return d;
         },
+        // pole tekstowe w komórce (np. grupy „2·1”); onChange dostaje surowy tekst
+        textCell({ value = '', cls = '', onChange, maxLen = 6 }) {
+            const d = document.createElement('div');
+            d.className = 'cell empty edit small ' + cls;
+            const i = document.createElement('input');
+            i.type = 'text'; i.maxLength = maxLen; i.autocomplete = 'off'; i.style.width = '100%';
+            i.value = value;
+            i.addEventListener('input', () => onChange(i.value));
+            d.appendChild(i);
+            return d;
+        },
         // drobne kontrolki do paska narzędzi edytora
         toolButton(box, text, fn) {
             const b = document.createElement('button');
