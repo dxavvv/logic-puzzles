@@ -7,10 +7,20 @@
         get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
         set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* tryb prywatny */ } }
     };
+    // Bez zewnętrznych usług geolokalizacji (prywatność i hosting statyczny): kraj odgadujemy lokalnie
+    // z preferowanego języka przeglądarki oraz strefy czasowej (Europe/Warsaw = Polska).
+    function detect() {
+        const langs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || '']);
+        if (/^pl\b/i.test(langs[0] || '')) return 'pl';
+        let tz = '';
+        try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { /* brak Intl */ }
+        if (tz === 'Europe/Warsaw') return 'pl';
+        return 'en';
+    }
     const q = new URLSearchParams(location.search).get('lang');
     if (q === 'pl' || q === 'en') store.set('lp:lang', q);
     let lang = store.get('lp:lang');
-    if (lang !== 'pl' && lang !== 'en') lang = /^pl\b/i.test(navigator.language || '') ? 'pl' : 'en';
+    if (lang !== 'pl' && lang !== 'en') lang = detect();
     document.documentElement.lang = lang;
 
     // ---------- słownik dokładnych dopasowań ----------
