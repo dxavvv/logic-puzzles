@@ -9,6 +9,8 @@ Bez instalacji, bez reklam, bez konta.
 
 ![Gry](https://img.shields.io/badge/gry-23-5cdb8b) ![Technologia](https://img.shields.io/badge/HTML%20%7C%20CSS%20%7C%20JS-bez%20zależności-f0c060) ![Licencja](https://img.shields.io/badge/licencja-MIT-8899bb)
 
+🇵🇱 Polski · 🇬🇧 [English version](README.en.md)
+
 </div>
 
 ---
@@ -20,6 +22,7 @@ Bez instalacji, bez reklam, bez konta.
 - 📅 **Wyzwanie dnia i linki do plansz** – ta sama łamigłówka dla każdego, a każdą planszę możesz wysłać znajomemu linkiem.
 - ⏱️ **Czas, rekordy i statystyki** – licznik czasu, rekord dla każdego rozmiaru i poziomu, seria dni z rozwiązaną łamigłówką.
 - 🎨 **Pikselowa oprawa** – ręcznie rysowane ikony w stylu pixel art, konfetti z pikseli po wygranej i cztery motywy kolorystyczne.
+- 🌐 **Polski i angielski** – język przełączysz jednym kliknięciem; domyślnie strona wybiera język przeglądarki.
 - ✅ **Sprawdzanie według zasad** – każde poprawne rozwiązanie zostanie uznane, nie tylko to „wzorcowe”.
 - 📱 **Komputer i telefon** – układ dopasowuje się do ekranu, bez żadnej instalacji.
 - 🔒 **Prywatnie** – wszystko dzieje się w Twojej przeglądarce; rekordy i ustawienia zapisują się tylko lokalnie (`localStorage`), nic nie jest nigdzie wysyłane.
@@ -50,6 +53,7 @@ Pod nimi jest pasek z dodatkami:
 | 📤 **Udostępnij** | Kopiuje link do bieżącej planszy – po jego otwarciu ktoś zobaczy dokładnie tę samą łamigłówkę. |
 | 🔊 **Dźwięk** | Włącza i wyłącza krótkie, retro dźwięki (domyślnie włączone). |
 | 🎨 **Motyw** | Przełącza motywy: Noc, Retro, Zmierzch i Lód. |
+| 🌐 **Język** | Przełącza między polskim a angielskim i zachowuje bieżącą planszę. |
 
 Strona główna ma dodatkowo **wyszukiwarkę**, **filtry kategorii**, przycisk **losowej gry**, statystyki oraz odznaki przy rozwiązanych grach.
 
@@ -130,7 +134,8 @@ python -m http.server 8000   # następnie http://localhost:8000
 │   ├── base.css          # wspólne style gier
 │   ├── common.js         # wspólna biblioteka (obiekt G): plansze, generatory, edytor, ziarno planszy
 │   ├── pixel.js          # silnik pixel artu: sprite'y SVG zamiast emotek
-│   └── fx.js             # czas, rekordy, konfetti, dźwięk, motywy
+│   ├── fx.js             # czas, rekordy, konfetti, dźwięk, motywy
+│   └── i18n.js           # wersje językowe PL / EN
 └── games/
     └── <nazwa-gry>/      # każda gra w osobnym katalogu
         ├── index.html    # strona gry i zasady
@@ -138,6 +143,8 @@ python -m http.server 8000   # następnie http://localhost:8000
 ```
 
 Ikony i emotki w tekście zamienia automatycznie `assets/pixel.js` – nowy sprite dodajesz jako mapę znaków 12×12 w obiekcie `S` i przypisujesz mu emotkę w `E`.
+
+Teksty są w kodzie i w HTML po polsku, a `assets/i18n.js` podmienia je na angielskie w przeglądarce (słownik plus wzorce dla komunikatów z liczbami). Język wybierasz parametrem `?lang=en` / `?lang=pl`, zapamiętuje go `localStorage`, a bez wyboru obowiązuje język przeglądarki.
 
 Wszystkie ścieżki są względne, więc strona działa zarówno lokalnie, jak i pod adresem `/logic-puzzles/`.
 
@@ -147,8 +154,9 @@ Wszystkie ścieżki są względne, więc strona działa zarówno lokalnie, jak i
 2. Dodaj link powrotu (`../../index.html`) oraz krótki opis zasad po polsku.
 3. Podłącz grę przez `G.wire({ newGame, check, solve, reset })`. Sprawdzanie warto oprzeć na regułach, nie na porównaniu z zapisanym rozwiązaniem.
 4. Opcjonalnie dodaj obiekt `edit` (`params`, `hint`, `begin`, `play`), a gra dostanie przycisk „Własna plansza”.
-5. Dołącz `assets/pixel.js` i `assets/fx.js` przed `common.js` – gra od razu dostanie licznik, rekordy, link do planszy i wyzwanie dnia.
-6. Dodaj kartę gry w głównym `index.html` (oraz kategorię w `script.js`) i wpis w tabeli powyżej.
+5. Dołącz `assets/i18n.js`, `assets/pixel.js` i `assets/fx.js` przed `common.js` – gra od razu dostanie licznik, rekordy, link do planszy i wyzwanie dnia.
+6. Dodaj angielskie tłumaczenia nowych tekstów w `assets/i18n.js` (`EXACT`, `PATTERNS` oraz wpis `RULES` z zasadami gry).
+7. Dodaj kartę gry w głównym `index.html` (oraz kategorię w `script.js`) i wpis w tabeli powyżej.
 
 ## 🌐 Hosting
 
