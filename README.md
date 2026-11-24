@@ -17,9 +17,12 @@ Bez instalacji, bez reklam, bez konta.
 
 - 🎲 **Nieskończona liczba plansz** – każda gra generuje nowe łamigłówki, w kilku rozmiarach i na trzech poziomach trudności.
 - ✏️ **Własne łamigłówki** – w prawie każdej grze możesz ułożyć własną planszę o dowolnych wymiarach (patrz [niżej](#️-własne-łamigłówki)).
+- 📅 **Wyzwanie dnia i linki do plansz** – ta sama łamigłówka dla każdego, a każdą planszę możesz wysłać znajomemu linkiem.
+- ⏱️ **Czas, rekordy i statystyki** – licznik czasu, rekord dla każdego rozmiaru i poziomu, seria dni z rozwiązaną łamigłówką.
+- 🎨 **Pikselowa oprawa** – ręcznie rysowane ikony w stylu pixel art, konfetti z pikseli po wygranej i cztery motywy kolorystyczne.
 - ✅ **Sprawdzanie według zasad** – każde poprawne rozwiązanie zostanie uznane, nie tylko to „wzorcowe”.
 - 📱 **Komputer i telefon** – układ dopasowuje się do ekranu, bez żadnej instalacji.
-- 🔒 **Prywatnie** – wszystko dzieje się w Twojej przeglądarce, nic nie jest nigdzie wysyłane.
+- 🔒 **Prywatnie** – wszystko dzieje się w Twojej przeglądarce; rekordy i ustawienia zapisują się tylko lokalnie (`localStorage`), nic nie jest nigdzie wysyłane.
 
 ## 🚀 Jak zacząć
 
@@ -33,9 +36,22 @@ Na każdej stronie znajdziesz te same przyciski:
 | --- | --- |
 | 🎲 **Nowa gra** | Losuje nową planszę (rozmiar i poziom wybierasz powyżej). |
 | ✅ **Sprawdź** | Zaznacza błędy lub gratuluje rozwiązania. |
-| 🤖 **Rozwiąż** | Pokazuje przykładowe rozwiązanie. |
+| 🤖 **Rozwiąż** | Pokazuje przykładowe rozwiązanie (takie rozwiązanie nie liczy się do rekordów). |
 | 🔄 **Resetuj** | Wraca do początku bieżącej planszy. |
 | ✏️ **Własna plansza** | Otwiera edytor, w którym układasz własny wariant. |
+
+Pod nimi jest pasek z dodatkami:
+
+| Element | Co robi |
+| --- | --- |
+| ⏱️ **Czas** | Mierzy czas rozwiązywania; zatrzymuje się po wygranej i gdy karta jest w tle. |
+| 🏆 **Rekord** | Twój najlepszy czas dla danej gry, rozmiaru i poziomu. |
+| 📅 **Wyzwanie dnia** | Ładuje planszę, która jest dziś taka sama dla wszystkich graczy. |
+| 📤 **Udostępnij** | Kopiuje link do bieżącej planszy – po jego otwarciu ktoś zobaczy dokładnie tę samą łamigłówkę. |
+| 🔊 **Dźwięk** | Włącza i wyłącza krótkie, retro dźwięki (domyślnie włączone). |
+| 🎨 **Motyw** | Przełącza motywy: Noc, Retro, Zmierzch i Lód. |
+
+Strona główna ma dodatkowo **wyszukiwarkę**, **filtry kategorii**, przycisk **losowej gry**, statystyki oraz odznaki przy rozwiązanych grach.
 
 ## 🎮 Gry
 
@@ -112,12 +128,16 @@ python -m http.server 8000   # następnie http://localhost:8000
 ├── index.html            # strona główna z listą gier
 ├── assets/
 │   ├── base.css          # wspólne style gier
-│   └── common.js         # wspólna biblioteka (obiekt G): plansze, generatory, edytor
+│   ├── common.js         # wspólna biblioteka (obiekt G): plansze, generatory, edytor, ziarno planszy
+│   ├── pixel.js          # silnik pixel artu: sprite'y SVG zamiast emotek
+│   └── fx.js             # czas, rekordy, konfetti, dźwięk, motywy
 └── games/
     └── <nazwa-gry>/      # każda gra w osobnym katalogu
         ├── index.html    # strona gry i zasady
         └── script.js     # logika: generowanie, sprawdzanie, edytor
 ```
+
+Ikony i emotki w tekście zamienia automatycznie `assets/pixel.js` – nowy sprite dodajesz jako mapę znaków 12×12 w obiekcie `S` i przypisujesz mu emotkę w `E`.
 
 Wszystkie ścieżki są względne, więc strona działa zarówno lokalnie, jak i pod adresem `/logic-puzzles/`.
 
@@ -127,7 +147,8 @@ Wszystkie ścieżki są względne, więc strona działa zarówno lokalnie, jak i
 2. Dodaj link powrotu (`../../index.html`) oraz krótki opis zasad po polsku.
 3. Podłącz grę przez `G.wire({ newGame, check, solve, reset })`. Sprawdzanie warto oprzeć na regułach, nie na porównaniu z zapisanym rozwiązaniem.
 4. Opcjonalnie dodaj obiekt `edit` (`params`, `hint`, `begin`, `play`), a gra dostanie przycisk „Własna plansza”.
-5. Dodaj kartę gry w głównym `index.html` i wpis w tabeli powyżej.
+5. Dołącz `assets/pixel.js` i `assets/fx.js` przed `common.js` – gra od razu dostanie licznik, rekordy, link do planszy i wyzwanie dnia.
+6. Dodaj kartę gry w głównym `index.html` (oraz kategorię w `script.js`) i wpis w tabeli powyżej.
 
 ## 🌐 Hosting
 
