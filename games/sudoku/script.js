@@ -170,7 +170,7 @@
                 isRevealed = false;
                 renderGrid();
                 const givenCount = mask.flat().filter(Boolean).length;
-                setStatus(`Nowa plansza (${N}×${N}, ${diff}). Podanych: ${givenCount}.`, 'success');
+                setStatus(`Nowa plansza (${N}×${N}, ${diff}). Podanych: ${givenCount}.`, 'info');
             }
             btnGenerate.disabled = btnGenerateEmpty.disabled = false;
         }, 50);
@@ -311,7 +311,7 @@
         } else {
             const filled = currentGrid.flat().filter(v => v !== 0).length;
             if (filled === N*N) setStatus('🎉 Gratulacje! Sudoku rozwiązane!', 'success');
-            else setStatus('✅ Poprawnie – istnieje co najmniej jedno rozwiązanie.', 'success');
+            else setStatus('✅ Poprawnie – istnieje co najmniej jedno rozwiązanie.', 'info');
         }
     }
 
@@ -330,7 +330,7 @@
             currentGrid = solutions[0];
             isRevealed = false;
             renderGrid();
-            setStatus('🤖 Plansza rozwiązana.', 'success');
+            setStatus('🤖 Plansza rozwiązana.', 'info');
         } else {
             setStatus('❌ Brak rozwiązania – sprawdź wpisane cyfry.', 'error');
         }

@@ -183,13 +183,54 @@
         custom: false,
         wire(h) {
             G.h = h;
+            const fx = typeof FX !== 'undefined' ? FX : null;
             const on = (id, fn) => { const e = $(id); if (e && fn) e.addEventListener('click', () => fn()); };
-            const baseNew = h.newGame;
-            h.newGame = () => { G.exitEdit(false); G.custom = false; baseNew(); };
+            const baseNew = h.newGame, baseReset = h.reset, baseSolve = h.solve;
+            const ss = $('selectSize'), sd = $('selectDifficulty');
+            let pending = null; // ziarno z adresu lub z „Wyzwania dnia”
+            if (fx) {
+                fx.managed = true;
+                const q = new URLSearchParams(location.search);
+                pending = q.get('seed');
+                const pick = (sel, v) => { if (sel && v && [...sel.options].some(o => o.value === v)) sel.value = v; };
+                pick(ss, q.get('n')); pick(sd, q.get('d'));
+                fx.mount();
+            }
+            const seedUi = () => {
+                const chip = $('fxSeedChip');
+                if (!chip || !G.seed) return;
+                chip.hidden = false;
+                chip.textContent = G.seed.charAt(0) === 'D' && /^D\d{8}$/.test(G.seed)
+                    ? '📅 Wyzwanie dnia ' + G.seed.slice(7) + '.' + G.seed.slice(5, 7)
+                    : 'Plansza #' + G.seed;
+            };
+            h.newGame = seed => {
+                G.exitEdit(false); G.custom = false;
+                if (!fx) { baseNew(); return; }
+                fx.custom = false;
+                const sd0 = typeof seed === 'string' ? seed : (pending || fx.randSeed());
+                pending = null;
+                G.seed = sd0;
+                fx.withSeed(sd0 + '|' + (ss ? ss.value : '') + '|' + G.level(), baseNew);
+                fx.timerStart(); seedUi(); fx.blip();
+            };
+            h.reset = () => { baseReset(); if (fx) fx.timerStart(); };
+            h.solve = () => { if (fx && !G.custom) fx.cheated = true; baseSolve(); };
             on('btnNew', h.newGame); on('btnCheck', h.check); on('btnSolve', h.solve); on('btnReset', h.reset);
             ['selectSize', 'selectDifficulty'].forEach(id => {
                 const e = $(id); if (e) e.addEventListener('change', () => h.newGame());
             });
+            if (fx) {
+                fx.addButton('📅', 'Wyzwanie dnia', () => h.newGame(fx.dailySeed()));
+                fx.addButton('📤', 'Udostępnij', () => {
+                    if (G.custom) { fx.toast('✏️ Własnej planszy nie da się udostępnić linkiem'); return; }
+                    const q = new URLSearchParams();
+                    q.set('seed', G.seed);
+                    if (ss) q.set('n', ss.value);
+                    if (sd) q.set('d', sd.value);
+                    fx.copy(location.origin + location.pathname + '?' + q.toString());
+                });
+            }
             if (h.edit) G.setupEdit(h);
             h.newGame();
         },
@@ -227,6 +268,7 @@
                 btn.style.display = '';
             };
             const enter = () => {
+                if (window.FX) FX.timerHide();
                 G.editing = true; panel.hidden = false;
                 hide.forEach(id => { const e = $(id); if (e) e.style.display = 'none'; });
                 btn.style.display = 'none';
@@ -252,7 +294,7 @@
             $('btnPlay').addEventListener('click', () => {
                 const err = h.edit.play(read());  // sprawdza i zapisuje stan, bez rysowania
                 if (err) { G.status(err, 'error'); return; }
-                G.exitEdit(); G.custom = true; h.reset();
+                G.exitEdit(); G.custom = true; if (window.FX) FX.custom = true; h.reset(); if (window.FX) FX.paintBest();
                 G.status('Własna plansza – powodzenia! (Przycisk „Rozwiąż” nie jest dla niej dostępny).', 'info');
             });
         },

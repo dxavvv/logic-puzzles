@@ -497,7 +497,7 @@
                 givenMask = deepCopy(result.mask);
                 isRevealed = false;
                 renderGrid();
-                setStatus(`✅ Usunięto ${result.removedCount} z ${H*W} pól. Rozwiązanie jednoznaczne.`, 'success');
+                setStatus(`✅ Usunięto ${result.removedCount} z ${H*W} pól. Rozwiązanie jednoznaczne.`, 'info');
             }
             btnGenerate.disabled = false;
             btnGenerateEmpty.disabled = false;
@@ -526,7 +526,7 @@
         document.querySelectorAll('.cell.error-highlight').forEach(el => el.classList.remove('error-highlight'));
         if (errors.length === 0) {
             const allFilled = currentGrid.every(row => row.every(v => v !== null));
-            setStatus(allFilled ? '🎉 Gratulacje! Plansza całkowicie poprawna!' : '✅ Dotychczas poprawne.', 'success');
+            setStatus(allFilled ? '🎉 Gratulacje! Plansza całkowicie poprawna!' : '✅ Dotychczas poprawne.', allFilled ? 'success' : 'info');
         } else {
             setStatus(`❌ ${errors.length} błędów: ${errors[0]}`, 'error');
             highlightErrors(errorCells);
@@ -550,7 +550,7 @@
             currentGrid = solutions[0];
             isRevealed = false;
             renderGrid();
-            setStatus('🤖 Rozwiązanie znalezione!', 'success');
+            setStatus('🤖 Rozwiązanie znalezione!', 'info');
         } else if (solutions.length === 0) {
             setStatus('❌ Solver nie znalazł rozwiązania. Sprawdź wpisane cyfry i sumy.', 'error');
         }
