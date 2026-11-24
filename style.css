@@ -169,3 +169,58 @@ footer {
     h1 { font-size: 1.8rem; }
     .games-grid { grid-template-columns: 1fr; }
 }
+
+/* --- pikselowy styl strony głównej --- */
+header h1 {
+    text-shadow: 3px 3px 0 #2b6cb0, 6px 6px 0 rgba(0, 0, 0, .35);
+    letter-spacing: .02em;
+}
+.home-stats {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 8px;
+}
+.home-stats .stat {
+    display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px;
+    background: var(--surface); border: 2px solid var(--border); font-size: .82rem; font-weight: 600;
+    clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));
+}
+.home-stats .stat b { color: var(--gold, #f0c060); }
+.home-stats .px { width: 18px; height: 18px; }
+
+.home-tools {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; width: 100%;
+}
+.home-tools input[type=search] {
+    flex: 1 1 200px; max-width: 280px; padding: 9px 12px; color: var(--text); background: var(--surface);
+    border: 2px solid var(--border); font: inherit; font-size: .9rem; outline: none;
+}
+.home-tools input[type=search]:focus { border-color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.chip {
+    cursor: pointer; font: 600 .82rem 'Segoe UI', system-ui, sans-serif; color: var(--text);
+    background: var(--surface); border: 2px solid var(--border); padding: 8px 12px;
+    clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip.on { background: var(--accent); border-color: var(--accent); color: #0d0d1a; }
+.chip.random { border-color: var(--gold, #f0c060); }
+.chip .px { width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px; }
+
+.game-card {
+    border-width: 2px; border-radius: 0;
+    clip-path: polygon(0 6px, 6px 6px, 6px 0, calc(100% - 6px) 0, calc(100% - 6px) 6px, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 6px calc(100% - 6px), 0 calc(100% - 6px));
+}
+.game-card:hover { transform: translateY(-3px); box-shadow: none; background: var(--surface2); }
+.game-card.hidden { display: none; }
+.card-btn { border-radius: 0; border-width: 2px; }
+.card-icon { image-rendering: pixelated; }
+.card-icon .px { transition: transform .2s steps(3); }
+.game-card:hover .card-icon .px { transform: translateY(-4px) scale(1.08); }
+.solved-badge {
+    position: absolute; top: 10px; right: 10px; display: inline-flex; align-items: center; gap: 4px;
+    font-size: .72rem; font-weight: 700; color: var(--gold, #f0c060);
+}
+.solved-badge .px { width: 14px; height: 14px; }
+.no-results { grid-column: 1 / -1; text-align: center; color: var(--text-secondary); padding: 24px 0; }
+.home-float { position: fixed; top: 12px; right: 12px; z-index: 5; display: flex; gap: 8px; }
+.home-float .chip { padding: 7px 10px; }
+@media (max-width: 520px) { .home-float { position: static; justify-content: center; } }

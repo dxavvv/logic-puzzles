@@ -12,7 +12,19 @@
         <header>
             <h1>🧩 Łamigłówki logiczne</h1>
             <p class="subtitle">Wybierz grę i wytęż umysł</p>
+            <div class="home-stats" id="homeStats" aria-live="polite"></div>
         </header>
+
+        <section class="home-tools" aria-label="Wyszukiwanie i filtry">
+            <input type="search" id="homeSearch" placeholder="Szukaj gry…" aria-label="Szukaj gry" autocomplete="off">
+            <div class="chips" id="homeChips" role="group" aria-label="Kategoria">
+                <button type="button" class="chip on" data-cat="all">Wszystkie</button>
+                <button type="button" class="chip" data-cat="digits">Cyfry</button>
+                <button type="button" class="chip" data-cat="paint">Zamalowywanie</button>
+                <button type="button" class="chip" data-cat="place">Rozmieszczanie</button>
+            </div>
+            <button type="button" class="chip random" id="homeRandom">🎲 Losowa gra</button>
+        </section>
 
         <main class="games-grid">
             <a href="games/od0do9/index.html" class="game-card">
@@ -190,6 +202,8 @@
         </footer>
     </div>
 
+    <script src="assets/pixel.js"></script>
+    <script src="assets/fx.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
