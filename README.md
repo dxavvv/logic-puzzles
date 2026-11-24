@@ -5,11 +5,11 @@
 **A free collection of logic puzzles that run right in your browser.**
 No installation, no ads, no account.
 
-[![Play online](https://img.shields.io/badge/▶_Play_online-dxavvv.github.io-5eb8f7?style=for-the-badge)](https://dxavvv.github.io/logic-puzzles/?lang=en)
+[![Play online](https://img.shields.io/badge/▶_Play_online-dxavvv.github.io-5eb8f7?style=for-the-badge)](https://dxavvv.github.io/logic-puzzles/)
 
 ![Games](https://img.shields.io/badge/games-23-5cdb8b) ![Tech](https://img.shields.io/badge/HTML%20%7C%20CSS%20%7C%20JS-no%20dependencies-f0c060) ![License](https://img.shields.io/badge/license-MIT-8899bb)
 
-🇵🇱 [Wersja polska](README.md) · 🇬🇧 English
+🇬🇧 English · 🇵🇱 [Wersja polska](README.pl.md)
 
 </div>
 
@@ -22,14 +22,14 @@ No installation, no ads, no account.
 - 📅 **Daily challenge and shareable boards** – the same puzzle for everyone, and you can send any board to a friend as a link.
 - ⏱️ **Timer, records and stats** – a solving timer, a best time for every size and level, and a streak of days with a solved puzzle.
 - 🎨 **Pixel-art look** – hand-drawn pixel-art icons, pixel confetti after a win and four colour themes.
-- 🌐 **Polish and English** – switch the language with one click; the site follows your browser language by default.
+- 🌐 **Polish and English** – switch the language with one click; the site picks the language from your browser settings and time zone (Polish for Poland, English elsewhere) and remembers your choice.
 - ✅ **Rule-based checking** – any valid solution is accepted, not just the "reference" one.
 - 📱 **Desktop and mobile** – the layout adapts to the screen, with nothing to install.
 - 🔒 **Private** – everything happens in your browser; records and settings are stored locally only (`localStorage`), nothing is sent anywhere.
 
 ## 🚀 Getting started
 
-1. Open **https://dxavvv.github.io/logic-puzzles/?lang=en**
+1. Open **https://dxavvv.github.io/logic-puzzles/** (add `?lang=pl` for the Polish version)
 2. Pick a game from the list.
 3. Read the short rules at the top of the page and start playing.
 
@@ -144,7 +144,7 @@ python -m http.server 8000   # then http://localhost:8000
 
 Icons and emoji in text are replaced automatically by `assets/pixel.js`: add a new sprite as a 12×12 character map in the `S` object and assign it an emoji in `E`.
 
-Texts are written in Polish in the code and HTML, and `assets/i18n.js` swaps them for English in the browser (a dictionary plus patterns for messages with numbers). The language is chosen with `?lang=en` / `?lang=pl`, remembered in `localStorage`, and otherwise follows the browser language.
+Texts are written in Polish in the code and HTML, and `assets/i18n.js` swaps them for English in the browser (a dictionary plus patterns for messages with numbers). The language is chosen with `?lang=en` / `?lang=pl` and remembered in `localStorage`. Without a choice it is guessed locally from the browser's preferred language and time zone (no geolocation service is contacted, so nothing about visitors leaves their browser): Polish for Polish-language browsers or the Europe/Warsaw time zone, English otherwise.
 
 All paths are relative, so the site works both locally and under `/logic-puzzles/`.
 

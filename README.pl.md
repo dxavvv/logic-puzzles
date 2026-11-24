@@ -5,11 +5,11 @@
 **Darmowa kolekcja gier logicznych, które działają prosto w przeglądarce.**
 Bez instalacji, bez reklam, bez konta.
 
-[![Graj online](https://img.shields.io/badge/▶_Graj_online-dxavvv.github.io-5eb8f7?style=for-the-badge)](https://dxavvv.github.io/logic-puzzles/)
+[![Graj online](https://img.shields.io/badge/▶_Graj_online-dxavvv.github.io-5eb8f7?style=for-the-badge)](https://dxavvv.github.io/logic-puzzles/?lang=pl)
 
 ![Gry](https://img.shields.io/badge/gry-23-5cdb8b) ![Technologia](https://img.shields.io/badge/HTML%20%7C%20CSS%20%7C%20JS-bez%20zależności-f0c060) ![Licencja](https://img.shields.io/badge/licencja-MIT-8899bb)
 
-🇵🇱 Polski · 🇬🇧 [English version](README.en.md)
+🇵🇱 Polski · 🇬🇧 [English version](README.md)
 
 </div>
 
@@ -22,14 +22,14 @@ Bez instalacji, bez reklam, bez konta.
 - 📅 **Wyzwanie dnia i linki do plansz** – ta sama łamigłówka dla każdego, a każdą planszę możesz wysłać znajomemu linkiem.
 - ⏱️ **Czas, rekordy i statystyki** – licznik czasu, rekord dla każdego rozmiaru i poziomu, seria dni z rozwiązaną łamigłówką.
 - 🎨 **Pikselowa oprawa** – ręcznie rysowane ikony w stylu pixel art, konfetti z pikseli po wygranej i cztery motywy kolorystyczne.
-- 🌐 **Polski i angielski** – język przełączysz jednym kliknięciem; domyślnie strona wybiera język przeglądarki.
+- 🌐 **Polski i angielski** – język przełączysz jednym kliknięciem; strona sama wybiera język na podstawie ustawień przeglądarki i strefy czasowej (polski dla Polski, angielski poza nią) i zapamiętuje Twój wybór.
 - ✅ **Sprawdzanie według zasad** – każde poprawne rozwiązanie zostanie uznane, nie tylko to „wzorcowe”.
 - 📱 **Komputer i telefon** – układ dopasowuje się do ekranu, bez żadnej instalacji.
 - 🔒 **Prywatnie** – wszystko dzieje się w Twojej przeglądarce; rekordy i ustawienia zapisują się tylko lokalnie (`localStorage`), nic nie jest nigdzie wysyłane.
 
 ## 🚀 Jak zacząć
 
-1. Wejdź na **https://dxavvv.github.io/logic-puzzles/**
+1. Wejdź na **https://dxavvv.github.io/logic-puzzles/?lang=pl** (bez parametru język dobierze się automatycznie)
 2. Wybierz grę z listy.
 3. Przeczytaj krótkie zasady na górze ekranu i zacznij grać.
 
@@ -144,7 +144,7 @@ python -m http.server 8000   # następnie http://localhost:8000
 
 Ikony i emotki w tekście zamienia automatycznie `assets/pixel.js` – nowy sprite dodajesz jako mapę znaków 12×12 w obiekcie `S` i przypisujesz mu emotkę w `E`.
 
-Teksty są w kodzie i w HTML po polsku, a `assets/i18n.js` podmienia je na angielskie w przeglądarce (słownik plus wzorce dla komunikatów z liczbami). Język wybierasz parametrem `?lang=en` / `?lang=pl`, zapamiętuje go `localStorage`, a bez wyboru obowiązuje język przeglądarki.
+Teksty są w kodzie i w HTML po polsku, a `assets/i18n.js` podmienia je na angielskie w przeglądarce (słownik plus wzorce dla komunikatów z liczbami). Język wybierasz parametrem `?lang=en` / `?lang=pl`, zapamiętuje go `localStorage`, a bez wyboru jest zgadywany lokalnie z preferowanego języka przeglądarki i strefy czasowej (nie łączymy się z żadną usługą geolokalizacji, więc dane odwiedzających nie opuszczają przeglądarki): polski dla przeglądarek polskojęzycznych lub strefy Europe/Warsaw, w pozostałych przypadkach angielski.
 
 Wszystkie ścieżki są względne, więc strona działa zarówno lokalnie, jak i pod adresem `/logic-puzzles/`.
 
