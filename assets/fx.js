@@ -233,6 +233,7 @@ html[data-theme] body{background-image:radial-gradient(ellipse at 50% 0%,var(--s
             FX.bar = bar;
             FX.soundBtn = FX.addButton(FX.sound ? '🔊' : '🔇', 'Dźwięk', () => FX.toggleSound(), 'fxSound');
             FX.themeBtn = FX.addButton('🎨', THEMES.find(t => t.id === themeId).name, () => FX.nextTheme(), 'fxTheme');
+            if (window.I18N) FX.addButton('🌐', I18N.lang === 'en' ? 'Polski' : 'English', () => FX.switchLang(), 'fxLang');
         },
         toggleSound() {
             FX.sound = !FX.sound;
@@ -249,10 +250,18 @@ html[data-theme] body{background-image:radial-gradient(ellipse at 50% 0%,var(--s
             const b = document.getElementById('fxTheme');
             if (b) b.textContent = '🎨 ' + THEMES.find(t => t.id === themeId).name;
         },
+        // zmiana języka: odświeża stronę, ale zachowuje bieżącą planszę (ziarno)
+        switchLang() {
+            try {
+                if (window.G && G.shareUrl && G.seed && !G.custom) history.replaceState(null, '', G.shareUrl());
+            } catch (e) { /* brak history API */ }
+            if (window.I18N) I18N.toggle();
+        },
         copy(text) {
+            const ask = () => prompt(window.I18N ? I18N.t('Skopiuj link:') : 'Skopiuj link:', text);
             const done = () => FX.toast('📤 Link skopiowany do schowka');
-            if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => prompt('Skopiuj link:', text));
-            else prompt('Skopiuj link:', text);
+            if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, ask);
+            else ask();
         },
         init() {
             FX.mount();

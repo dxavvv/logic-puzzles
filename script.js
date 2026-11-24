@@ -135,9 +135,12 @@
         const f = document.createElement('div');
         f.className = 'home-float';
         f.innerHTML = '<button type="button" class="chip" id="fxSound">' + (FX.sound ? '🔊' : '🔇') + ' Dźwięk</button>' +
-            '<button type="button" class="chip" id="fxTheme">🎨 ' + FX.THEMES.find(t => t.id === (FX.store.get('lp:theme') || 'noc')).name + '</button>';
+            '<button type="button" class="chip" id="fxTheme">🎨 ' + FX.THEMES.find(t => t.id === (FX.store.get('lp:theme') || 'noc')).name + '</button>' +
+            (window.I18N ? '<button type="button" class="chip" id="fxLang">🌐 ' + (I18N.lang === 'en' ? 'Polski' : 'English') + '</button>' : '');
         document.body.appendChild(f);
         document.getElementById('fxSound').addEventListener('click', () => FX.toggleSound());
         document.getElementById('fxTheme').addEventListener('click', () => FX.nextTheme());
+        const lb = document.getElementById('fxLang');
+        if (lb) lb.addEventListener('click', () => I18N.toggle());
     }
 })();

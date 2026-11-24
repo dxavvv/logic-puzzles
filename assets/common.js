@@ -222,13 +222,16 @@
             });
             if (fx) {
                 fx.addButton('📅', 'Wyzwanie dnia', () => h.newGame(fx.dailySeed()));
-                fx.addButton('📤', 'Udostępnij', () => {
-                    if (G.custom) { fx.toast('✏️ Własnej planszy nie da się udostępnić linkiem'); return; }
+                G.shareUrl = () => {
                     const q = new URLSearchParams();
                     q.set('seed', G.seed);
                     if (ss) q.set('n', ss.value);
                     if (sd) q.set('d', sd.value);
-                    fx.copy(location.origin + location.pathname + '?' + q.toString());
+                    return location.origin + location.pathname + '?' + q.toString();
+                };
+                fx.addButton('📤', 'Udostępnij', () => {
+                    if (G.custom) { fx.toast('✏️ Własnej planszy nie da się udostępnić linkiem'); return; }
+                    fx.copy(G.shareUrl());
                 });
             }
             if (h.edit) G.setupEdit(h);
