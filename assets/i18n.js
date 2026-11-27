@@ -260,6 +260,8 @@
         [/^Lampka (\d+), (\d+): włączona$/, 'Light $1, $2: on'],
         [/^Lampka (\d+), (\d+): wyłączona$/, 'Light $1, $2: off'],
         [/^Ruchy: (\d+)$/, 'Moves: $1'],
+        [/^Minimum: (\d+)$/, 'Minimum: $1'],
+        [/^Brawo! Rozwiązane w (\d+) ruchach – to optymalnie!$/, 'Well done! Solved in $1 moves – that is optimal!'],
         [/^Zapalone: (\d+)$/, 'Lit: $1'],
         [/^Brawo! Rozwiązane w (\d+) ruchach\.$/, 'Well done! Solved in $1 moves.'],
         [/^Podpowiedź: kliknij zaznaczoną lampkę \(wiersz (\d+), kolumna (\d+)\)\.$/, 'Hint: click the highlighted lamp (row $1, column $2).'],
@@ -377,6 +379,60 @@
             'Shaded cells form <strong>one connected polygon</strong> with no 2×2 square.']
     };
 
+    // ---- gry dodane później (dopisywane automatycznie) ----
+    Object.assign(EXACT, {
+        "Binairo": "Binairo",
+        "Wypełnij planszę niebieskimi i pomarańczowymi kółkami: po tyle samo w każdym wierszu i kolumnie, bez trzech takich samych obok siebie.": "Fill the board with blue and orange dots: the same number of each in every row and column, and never three alike in a row.",
+        "Wypełnij planszę kółkami.": "Fill the board with dots.",
+        "Wiersze (parzysta liczba)": "Rows (an even number)",
+        "Kolumny (parzysta liczba)": "Columns (an even number)",
+        "Klikaj pola, aby ustawić kółka startowe: niebieskie, pomarańczowe, puste. Liczba wierszy i kolumn musi być parzysta.": "Click cells to set the starting dots: blue, orange, empty. The number of rows and columns must be even.",
+        "Kółka startowe łamią zasady (trzy takie same obok siebie, za dużo jednego koloru lub identyczne linie).": "The starting dots break the rules (three alike in a row, too many of one colour or identical lines)."
+});
+    Object.assign(RULES, {
+        "binairo": [
+                "Click a cell to place, in turn: a <strong>blue</strong> dot, an <strong>orange</strong> dot, an empty cell.",
+                "Every row and every column has the <strong>same number</strong> of dots of each colour.",
+                "<strong>Three alike</strong> dots cannot stand next to each other (horizontally or vertically).",
+                "No two rows and no two columns may be <strong>identical</strong>."
+        ]
+});
+    Object.assign(EXACT, {
+        "Wieże Hanoi": "Tower of Hanoi",
+        "Przenoś krążki między słupkami: pojedynczo i nigdy większy na mniejszy. Przenieś całą wieżę w jak najmniejszej liczbie ruchów.": "Move discs between pegs: one at a time and never a larger one onto a smaller one. Move the whole tower in as few moves as possible.",
+        "Krążki:": "Discs:",
+        "Krążki (1–10)": "Discs (1–10)",
+        "Słupki (3–5)": "Pegs (3–5)",
+        "Przenieś wszystkie krążki na ostatni słupek.": "Move all the discs to the last peg.",
+        "Nie można położyć większego krążka na mniejszym.": "You cannot put a larger disc on a smaller one.",
+        "Wybierz liczbę krążków i słupków. Wszystkie krążki startują na pierwszym słupku; trzeba je przenieść na ostatni.": "Choose the number of discs and pegs. All the discs start on the first peg and must be moved to the last one."
+});
+    Object.assign(RULES, {
+        "hanoi": [
+                "Click a peg to pick up its <strong>top disc</strong>, then click the destination peg.",
+                "You may move <strong>one disc at a time</strong>, and you may never put a larger disc on a smaller one.",
+                "Move all the discs to the <strong>last (right) peg</strong>, ideally in as few moves as possible."
+        ]
+});
+    Object.assign(EXACT, {
+        "Hitori": "Hitori",
+        "Zamaluj powtarzające się liczby tak, aby w wierszach i kolumnach zostały unikalne, a zamalowane pola się nie stykały.": "Shade repeated numbers so that the numbers left in every row and column are unique, and the shaded cells do not touch.",
+        "Zamaluj powtarzające się liczby tak, aby w żadnym wierszu i kolumnie nie zostały dwie takie same.": "Shade repeated numbers so that no row or column keeps two equal ones.",
+        "Niezamalowane liczby powtarzają się w wierszu lub kolumnie.": "Unshaded numbers repeat in a row or column.",
+        "Zamalowane pola nie mogą stykać się bokami.": "Shaded cells cannot touch along their sides.",
+        "Niezamalowane pola muszą tworzyć jedną całość.": "Unshaded cells must form one connected area.",
+        "Wpisz w polach liczby 1–9. Gracz zamaluje powtarzające się liczby tak, aby w każdym wierszu i kolumnie zostały unikalne.": "Enter numbers 1–9 in the cells. The player will shade repeated numbers so that every row and column keeps unique ones.",
+        "Wypełnij wszystkie pola liczbami 1–9.": "Fill in all the cells with numbers 1–9."
+});
+    Object.assign(RULES, {
+        "hitori": [
+                "Click a cell to shade it (or unshade it).",
+                "Shade some numbers so that in every row and every column the <strong>unshaded numbers do not repeat</strong>.",
+                "Shaded cells <strong>cannot touch along their sides</strong>, and all the unshaded cells must form <strong>one connected area</strong>."
+        ]
+});
+    // ---- koniec dodatków ----
+
     // ---------- tłumaczenie tekstu ----------
     const SPLIT = /^([^\p{L}\p{N}]*)([\s\S]*?)(\s*)$/u;
     function lookup(core) {
@@ -450,8 +506,12 @@
                 for (const m of list) {
                     m.addedNodes.forEach(n => convert(n));
                     if (m.type === 'characterData') convert(m.target);
+                    if (m.type === 'attributes') {
+                        const v = t(m.target.getAttribute(m.attributeName));
+                        if (v !== m.target.getAttribute(m.attributeName)) m.target.setAttribute(m.attributeName, v);
+                    }
                 }
-            }).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+            }).observe(document.documentElement, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ATTRS });
         }
     }
 

@@ -1,7 +1,7 @@
 /* Service worker: gra offline i instalacja na ekranie głównym.
    Strategia: najpierw cache, a w tle odświeżenie (stale-while-revalidate).
    Przy dodaniu nowej gry dopisz jej pliki do FILES i podbij VERSION. */
-const VERSION = 'lp-v1';
+const VERSION = 'lp-v2';
 const FILES = [
     './',
     'index.html',
@@ -20,12 +20,18 @@ const FILES = [
     'assets/icons/apple-touch-icon.png',
     'games/architekt/index.html',
     'games/architekt/script.js',
+    'games/binairo/index.html',
+    'games/binairo/script.js',
     'games/chmury/index.html',
     'games/chmury/script.js',
     'games/dzialania/index.html',
     'games/dzialania/script.js',
     'games/filomino/index.html',
     'games/filomino/script.js',
+    'games/hanoi/index.html',
+    'games/hanoi/script.js',
+    'games/hitori/index.html',
+    'games/hitori/script.js',
     'games/krzyzowkaliczbowa/index.html',
     'games/krzyzowkaliczbowa/script.js',
     'games/lampki/index.html',

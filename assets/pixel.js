@@ -151,6 +151,14 @@
         globe: [
             '....kkkk....', '..kkbbbbkk..', '.kbbnnbbbbk.', '.kbnnnnbbbk.', 'kbbnnnbbnnbk', 'kbbbnnbbnnbk',
             'kbbbbbbbnbbk', 'kbbbnbbbbbbk', '.kbbnnbbbbk.', '.kbbbnbbbbk.', '..kkbbbbkk..', '....kkkk....'],
+        dotb: [
+            '............', '....kkkk....', '..kkbbbbkk..', '..kbbwbbbk..', '.kbbwbbbbBk.', '.kbbbbbbbBk.', '.kbbbbbbbBk.', '.kbbbbbbBBk.', '..kbbbbBBk..', '..kkBBBBkk..', '....kkkk....', '............'],
+        doto: [
+            '............', '....kkkk....', '..kkooookk..', '..koowoook..', '.koowooooOk.', '.koooooooOk.', '.koooooooOk.', '.kooooooOOk.', '..kooooOOk..', '..kkOOOOkk..', '....kkkk....', '............'],
+        discs: [
+            '.....TT.....', '.....TT.....', '....kRRk....', '...kooook...', '..kyyyyyyk..', '.knnnnnnnnk.', 'kbbbbbbbbbbk', 'kTTTTTTTTTTk', 'kkkkkkkkkkkk'],
+        hitori: [
+            'kkkkkkkkkkkk', 'kdddkwwwkwww', 'kdddkwbwkwbw', 'kdddkwwwkwww', 'kkkkkkkkkkkk', 'kwwwkdddkwww', 'kwbwkdddkwbw', 'kwwwkdddkwww', 'kkkkkkkkkkkk', 'kwwwkwwwkddd', 'kwbwkwbwkddd', 'kwwwkwwwkddd'],
         share: [
             '............', '.......kkk..', '......kbbbk.', '..kkk.kbbbk.', '.kbbbkkbbk..', '.kbbbbbk....',
             '.kbbbkkbbk..', '..kkk.kbbbk.', '......kbbbk.', '.......kkk..', '............', '............']
@@ -164,7 +172,7 @@
         '↔': 'arrows', '🪵': 'plank', '🧩': 'puzzle', '🎲': 'dice', '✅': 'check', '🤖': 'robot', '🔄': 'refresh',
         '✏': 'pencil', '▶': 'play', '🧹': 'broom', '🎯': 'target', '🎉': 'party', '⛽': 'gas', '🚢': 'ship',
         '📝': 'memo', '🔒': 'lock', '✨': 'sparkle', '⏱': 'timer', '🏆': 'trophy', '🔊': 'sound', '🔇': 'mute',
-        '📅': 'calendar', '🔥': 'fire', '⭐': 'star', '📤': 'share', '🌐': 'globe', '⬜': 'tile', '📋': 'memo', '👁': 'eye', '⚠': 'warn', '❌': 'times', '🔜': 'play'
+        '📅': 'calendar', '🔥': 'fire', '⭐': 'star', '📤': 'share', '🌐': 'globe', '🔵': 'dotb', '🟠': 'doto', '🥞': 'discs', '⬛': 'hitori', '⬜': 'tile', '📋': 'memo', '👁': 'eye', '⚠': 'warn', '❌': 'times', '🔜': 'play'
     };
 
     const cache = {};
