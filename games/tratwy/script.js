@@ -58,6 +58,11 @@
             if (Math.random() > p) continue;
             num[Rf.r + G.rnd(Rf.h)][Rf.c + G.rnd(Rf.w)] = Rf.h * Rf.w;
         }
+        // plansza bez żadnej liczby byłaby bezsensowna: zawsze podajemy rozmiar choć jednej tratwy
+        if (!num.some(row => row.some(v => v))) {
+            const Rf = G.pick(b.rafts);
+            num[Rf.r + G.rnd(Rf.h)][Rf.c + G.rnd(Rf.w)] = Rf.h * Rf.w;
+        }
         reset();
     }
 
