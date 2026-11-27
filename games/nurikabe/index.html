@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0d0d1a">
+    <link rel="manifest" href="../../manifest.webmanifest">
+    <link rel="icon" type="image/png" href="../../assets/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="../../assets/icons/apple-touch-icon.png">
+    <title>Nurikabe – Łamigłówki logiczne</title>
+    <link rel="stylesheet" href="../../assets/base.css">
+    <link rel="stylesheet" href="../../assets/mobile.css">
+</head>
+<body>
+    <div class="game-container">
+        <a href="../../index.html" class="back-link">← Powrót do menu</a>
+        <h1>🏝️ Nurikabe</h1>
+
+        <div class="rules-box">
+            <strong>Zasady:</strong>
+            <ul>
+                <li>Kliknij pole, aby zamalować je jako <strong>morze</strong> (lub odmalować).</li>
+                <li>Każda liczba oznacza <strong>wyspę</strong> o tylu polach. Wyspa ma dokładnie jedną liczbę, a różne wyspy nie stykają się bokami.</li>
+                <li>Całe morze musi tworzyć <strong>jedną całość</strong> i nie może zawierać żadnego kwadratu 2×2.</li>
+            </ul>
+        </div>
+
+        <div class="controls-row">
+            <label>Rozmiar:
+                <select id="selectSize">
+                    <option value="5">5×5</option>
+                    <option value="6">6×6</option>
+                    <option value="7" selected>7×7</option>
+                    <option value="8">8×8</option>
+                    <option value="9">9×9</option>
+                    <option value="10">10×10</option>
+                </select>
+            </label>
+            <label>Poziom:
+                <select id="selectDifficulty">
+                    <option value="easy">Łatwy</option>
+                    <option value="medium" selected>Średni</option>
+                    <option value="hard">Trudny</option>
+                </select>
+            </label>
+        </div>
+        <div class="controls-row">
+            <button class="primary" id="btnNew">🎲 Nowa gra</button>
+            <button id="btnCheck">✅ Sprawdź</button>
+            <button class="accent" id="btnSolve">🤖 Rozwiąż</button>
+            <button class="danger" id="btnReset">🔄 Resetuj</button>
+        </div>
+
+        <div class="grid-wrapper">
+            <div class="board-grid plain" id="boardGrid"></div>
+        </div>
+        <div class="status-area neutral" id="statusArea"></div>
+        <div class="stats-row" id="statsRow"></div>
+    </div>
+
+    <script src="../../assets/i18n.js"></script>
+    <script src="../../assets/pixel.js"></script>
+    <script src="../../assets/fx.js"></script>
+    <script src="../../assets/mobile.js"></script>
+    <script src="../../assets/common.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -431,6 +431,23 @@
                 "Shaded cells <strong>cannot touch along their sides</strong>, and all the unshaded cells must form <strong>one connected area</strong>."
         ]
 });
+    Object.assign(EXACT, {
+        "Nurikabe": "Nurikabe",
+        "Zamaluj morze tak, aby każda wyspa miała tyle pól, ile wskazuje jej liczba, a morze było spójne i bez kwadratów 2×2.": "Shade the sea so that every island has as many cells as its number says, and the sea is connected with no 2×2 blocks.",
+        "Zamaluj morze tak, aby każda wyspa miała dokładnie jedną liczbę i tyle pól, ile ona wskazuje.": "Shade the sea so that every island has exactly one number and as many cells as it says.",
+        "Każda wyspa musi mieć dokładnie jedną liczbę i tyle pól, ile ona wskazuje.": "Every island must have exactly one number and as many cells as it says.",
+        "Morze nie może zawierać kwadratu 2×2.": "The sea cannot contain a 2×2 block.",
+        "Całe morze musi tworzyć jedną całość.": "The whole sea must form one connected area.",
+        "Wpisz liczby w polach, które mają być wyspami (puste pola to wolne miejsce). Gracz zamaluje morze.": "Enter numbers in the cells that are islands (empty cells are free space). The player will shade the sea.",
+        "Wpisz przynajmniej jedną liczbę.": "Enter at least one number."
+});
+    Object.assign(RULES, {
+        "nurikabe": [
+                "Click a cell to shade it as <strong>sea</strong> (or unshade it).",
+                "Every number is an <strong>island</strong> with that many cells. An island has exactly one number, and different islands never touch along their sides.",
+                "The whole sea must form <strong>one connected area</strong> and must not contain any 2×2 block."
+        ]
+});
     // ---- koniec dodatków ----
 
     // ---------- tłumaczenie tekstu ----------

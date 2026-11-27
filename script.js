@@ -64,7 +64,7 @@
 (function () {
     const CATS = {
         digits: ['od0do9', 'sudoku', 'lancuchsudoku', 'sudokurenban', 'piramidy', 'dzialania', 'ukosnedzialania', 'mniejszewieksze', 'parkiet', 'filomino', 'krzyzowkaliczbowa'],
-        paint: ['obrazeklogiczny', 'mozaika', 'wsapera', 'chmury', 'tratwy', 'wieze', 'binairo', 'hitori'],
+        paint: ['obrazeklogiczny', 'mozaika', 'wsapera', 'chmury', 'tratwy', 'wieze', 'binairo', 'hitori', 'nurikabe'],
         place: ['lampki', 'architekt', 'sapernamorzu', 'latarnie', 'wielokropka', 'lightsout', 'hanoi']
     };
     const catOf = id => Object.keys(CATS).find(c => CATS[c].includes(id)) || 'other';

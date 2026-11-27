@@ -7,7 +7,7 @@ Bez instalacji, bez reklam, bez konta.
 
 [![Graj online](https://img.shields.io/badge/▶_Graj_online-dxavvv.github.io-5eb8f7?style=for-the-badge)](https://dxavvv.github.io/logic-puzzles/?lang=pl)
 
-![Gry](https://img.shields.io/badge/gry-26-5cdb8b) ![Technologia](https://img.shields.io/badge/HTML%20%7C%20CSS%20%7C%20JS-bez%20zależności-f0c060) ![Licencja](https://img.shields.io/badge/licencja-MIT-8899bb)
+![Gry](https://img.shields.io/badge/gry-27-5cdb8b) ![Technologia](https://img.shields.io/badge/HTML%20%7C%20CSS%20%7C%20JS-bez%20zależności-f0c060) ![Licencja](https://img.shields.io/badge/licencja-MIT-8899bb)
 
 🇵🇱 Polski · 🇬🇧 [English version](README.md)
 
@@ -80,6 +80,7 @@ Strona główna ma dodatkowo **wyszukiwarkę**, **filtry kategorii**, przycisk *
 | Gra | Zasady w skrócie |
 | --- | --- |
 | 🔵 **Binairo** | Wypełnij planszę niebieskimi i pomarańczowymi kółkami: po tyle samo w każdym wierszu i kolumnie, bez trzech takich samych obok siebie i bez identycznych linii. |
+| 🏝️ **Nurikabe** | Zamaluj morze tak, aby każda wyspa miała jedną liczbę i tyle pól, ile ona wskazuje; morze jest spójne i bez kwadratów 2×2. |
 | ⬛ **Hitori** | Zamaluj powtarzające się liczby tak, aby w wierszach i kolumnach zostały unikalne, zamalowane pola się nie stykały, a reszta tworzyła całość. |
 | 🖼️ **Obrazek logiczny** | Nonogram: zamaluj pola według liczb przy wierszach i kolumnach, aby odkryć obrazek. |
 | 🎨 **Mozaika** | Cyfra mówi, ile pól wokół niej (razem z nią) jest zamalowanych. |

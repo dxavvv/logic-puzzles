@@ -159,6 +159,9 @@
             '.....TT.....', '.....TT.....', '....kRRk....', '...kooook...', '..kyyyyyyk..', '.knnnnnnnnk.', 'kbbbbbbbbbbk', 'kTTTTTTTTTTk', 'kkkkkkkkkkkk'],
         hitori: [
             'kkkkkkkkkkkk', 'kdddkwwwkwww', 'kdddkwbwkwbw', 'kdddkwwwkwww', 'kkkkkkkkkkkk', 'kwwwkdddkwww', 'kwbwkdddkwbw', 'kwwwkdddkwww', 'kkkkkkkkkkkk', 'kwwwkwwwkddd', 'kwbwkwbwkddd', 'kwwwkwwwkddd'],
+        island: [
+            'bbbbbbbbbbbb', 'bbbbbnnbbbbb', 'bbbbnNNnbbbb', 'bbbbbTTbbbbb', 'bbbyyyTyyybb', 'bbyyyyyyyyyb',
+            'byyyyyyyyyyb', 'bbyyyyyyyybb', 'bcbbbbbbbbcb', 'bbbcbbbbcbbb', 'bbbbbbbbbbbb', 'bbbbbbbbbbbb'],
         share: [
             '............', '.......kkk..', '......kbbbk.', '..kkk.kbbbk.', '.kbbbkkbbk..', '.kbbbbbk....',
             '.kbbbkkbbk..', '..kkk.kbbbk.', '......kbbbk.', '.......kkk..', '............', '............']
@@ -172,7 +175,7 @@
         '↔': 'arrows', '🪵': 'plank', '🧩': 'puzzle', '🎲': 'dice', '✅': 'check', '🤖': 'robot', '🔄': 'refresh',
         '✏': 'pencil', '▶': 'play', '🧹': 'broom', '🎯': 'target', '🎉': 'party', '⛽': 'gas', '🚢': 'ship',
         '📝': 'memo', '🔒': 'lock', '✨': 'sparkle', '⏱': 'timer', '🏆': 'trophy', '🔊': 'sound', '🔇': 'mute',
-        '📅': 'calendar', '🔥': 'fire', '⭐': 'star', '📤': 'share', '🌐': 'globe', '🔵': 'dotb', '🟠': 'doto', '🥞': 'discs', '⬛': 'hitori', '⬜': 'tile', '📋': 'memo', '👁': 'eye', '⚠': 'warn', '❌': 'times', '🔜': 'play'
+        '📅': 'calendar', '🔥': 'fire', '⭐': 'star', '📤': 'share', '🌐': 'globe', '🔵': 'dotb', '🟠': 'doto', '🥞': 'discs', '⬛': 'hitori', '⬜': 'tile', '📋': 'memo', '👁': 'eye', '⚠': 'warn', '❌': 'times', '🔜': 'play', '🏝': 'island'
     };
 
     const cache = {};

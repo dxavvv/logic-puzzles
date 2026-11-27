@@ -7,7 +7,7 @@ No installation, no ads, no account.
 
 [![Play online](https://img.shields.io/badge/▶_Play_online-dxavvv.github.io-5eb8f7?style=for-the-badge)](https://dxavvv.github.io/logic-puzzles/)
 
-![Games](https://img.shields.io/badge/games-26-5cdb8b) ![Tech](https://img.shields.io/badge/HTML%20%7C%20CSS%20%7C%20JS-no%20dependencies-f0c060) ![License](https://img.shields.io/badge/license-MIT-8899bb)
+![Games](https://img.shields.io/badge/games-27-5cdb8b) ![Tech](https://img.shields.io/badge/HTML%20%7C%20CSS%20%7C%20JS-no%20dependencies-f0c060) ![License](https://img.shields.io/badge/license-MIT-8899bb)
 
 🇬🇧 English · 🇵🇱 [Wersja polska](README.pl.md)
 
@@ -80,6 +80,7 @@ The home page also has a **search box**, **category filters**, a **random game**
 | Game | Rules in short |
 | --- | --- |
 | 🔵 **Binairo** | Fill the board with blue and orange dots: equal numbers in every row and column, never three alike in a row, no identical lines. |
+| 🏝️ **Nurikabe** | Shade the sea so every island has exactly one number and as many cells as it says; the sea stays connected with no 2×2 blocks. |
 | ⬛ **Hitori** | Shade repeated numbers so every row and column keeps unique ones, shaded cells do not touch and the rest stays connected. |
 | 🖼️ **Picture Logic** (*Obrazek logiczny*) | Nonogram: shade cells according to the numbers beside rows and columns to reveal the picture. |
 | 🎨 **Mosaic** (*Mozaika*) | A digit tells how many cells around it (including itself) are shaded. |

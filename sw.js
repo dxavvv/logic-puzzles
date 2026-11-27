@@ -1,7 +1,7 @@
 /* Service worker: gra offline i instalacja na ekranie głównym.
    Strategia: najpierw cache, a w tle odświeżenie (stale-while-revalidate).
    Przy dodaniu nowej gry dopisz jej pliki do FILES i podbij VERSION. */
-const VERSION = 'lp-v2';
+const VERSION = 'lp-v3';
 const FILES = [
     './',
     'index.html',
@@ -47,6 +47,8 @@ const FILES = [
     'games/mniejszewieksze/script.js',
     'games/mozaika/index.html',
     'games/mozaika/script.js',
+    'games/nurikabe/index.html',
+    'games/nurikabe/script.js',
     'games/obrazeklogiczny/index.html',
     'games/obrazeklogiczny/script.js',
     'games/od0do9/index.html',
