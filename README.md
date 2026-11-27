@@ -7,7 +7,7 @@ No installation, no ads, no account.
 
 [![Play online](https://img.shields.io/badge/▶_Play_online-dxavvv.github.io-5eb8f7?style=for-the-badge)](https://dxavvv.github.io/logic-puzzles/)
 
-![Games](https://img.shields.io/badge/games-23-5cdb8b) ![Tech](https://img.shields.io/badge/HTML%20%7C%20CSS%20%7C%20JS-no%20dependencies-f0c060) ![License](https://img.shields.io/badge/license-MIT-8899bb)
+![Games](https://img.shields.io/badge/games-26-5cdb8b) ![Tech](https://img.shields.io/badge/HTML%20%7C%20CSS%20%7C%20JS-no%20dependencies-f0c060) ![License](https://img.shields.io/badge/license-MIT-8899bb)
 
 🇬🇧 English · 🇵🇱 [Wersja polska](README.pl.md)
 
@@ -24,7 +24,7 @@ No installation, no ads, no account.
 - 🎨 **Pixel-art look** – hand-drawn pixel-art icons, pixel confetti after a win and four colour themes.
 - 🌐 **Polish and English** – switch the language with one click; the site picks the language from your browser settings and time zone (Polish for Poland, English elsewhere) and remembers your choice.
 - ✅ **Rule-based checking** – any valid solution is accepted, not just the "reference" one.
-- 📱 **Desktop and mobile** – the layout adapts to the screen, with nothing to install.
+- 📱 **Built for phones** – compact layout, an on-screen number pad instead of the keyboard, collapsible rules, and you can install it as an app and play offline (see [below](#-on-your-phone)).
 - 🔒 **Private** – everything happens in your browser; records and settings are stored locally only (`localStorage`), nothing is sent anywhere.
 
 ## 🚀 Getting started
@@ -79,6 +79,8 @@ The home page also has a **search box**, **category filters**, a **random game**
 
 | Game | Rules in short |
 | --- | --- |
+| 🔵 **Binairo** | Fill the board with blue and orange dots: equal numbers in every row and column, never three alike in a row, no identical lines. |
+| ⬛ **Hitori** | Shade repeated numbers so every row and column keeps unique ones, shaded cells do not touch and the rest stays connected. |
 | 🖼️ **Picture Logic** (*Obrazek logiczny*) | Nonogram: shade cells according to the numbers beside rows and columns to reveal the picture. |
 | 🎨 **Mosaic** (*Mozaika*) | A digit tells how many cells around it (including itself) are shaded. |
 | 💣 **Minesweeper Path** (*W sapera*) | Shaded cells must form one path that matches the digits. |
@@ -96,6 +98,7 @@ The home page also has a **search box**, **category filters**, a **random game**
 | 🗼 **Lighthouses** (*Latarnie*) | Every ship must be lit and the numbers next to the lighthouses must match. |
 | ⭕ **Dot Loop** (*Wielokropka*) | Join the dots with one loop so that numbers tell along how many sides of a cell the loop runs. |
 | 💡 **Lights Out** (*Zgaś światła*) | Clicking a lamp toggles it and its neighbours. Turn them all off in as few moves as possible. |
+| 🥞 **Tower of Hanoi** (*Wieże Hanoi*) | Move the discs between pegs one at a time, never a larger one onto a smaller one. Fewest moves wins; the optimal count is shown. |
 
 > More puzzles are added regularly.
 
@@ -114,6 +117,14 @@ Most games have a **"✏️ Custom board"** button that lets you build your own 
 - For custom boards the "Solve" button is unavailable (there is no reference solution), but **Check** still points out mistakes.
 - **Lights Out**, **Sudoku** and **FROM (0) TO (9)** have their own modes: any size, your own lamp layout, an empty board for entering your own digits and editable sums.
 
+## 📱 On your phone
+
+- **Number pad** – on touch screens a big on-screen keypad replaces the system keyboard, so it never covers the board (it only enables the digits the board allows).
+- **Compact layout** – a wide board, large tap targets and a toolbar reduced to icons; boards that are too large for the screen scroll sideways instead of getting tiny cells.
+- **Rules that get out of the way** – the rules are open the first time you visit a game and fold into one line afterwards (tap them to open).
+- **Install it** – use "Add to Home screen" (or "Install app" in Chrome) and the site opens like a native app, full screen.
+- **Offline** – after the first visit the games work without a connection.
+
 ## 💻 Running locally
 
 The project is plain HTML, CSS and JavaScript – no build step and no dependencies.
@@ -130,12 +141,17 @@ python -m http.server 8000   # then http://localhost:8000
 ```
 .
 ├── index.html            # home page with the list of games
+├── manifest.webmanifest  # installable app description
+├── sw.js                 # service worker: offline play
 ├── assets/
 │   ├── base.css          # shared game styles
 │   ├── common.js         # shared library (object G): boards, generators, editor, board seeds
 │   ├── pixel.js          # pixel-art engine: SVG sprites instead of emoji
 │   ├── fx.js             # timer, records, confetti, sound, themes
-│   └── i18n.js           # Polish / English language support
+│   ├── i18n.js           # Polish / English language support
+│   ├── mobile.css        # phone layout and the number pad
+│   ├── mobile.js         # number pad, collapsible rules, service worker registration
+│   └── icons/            # app icons (PWA)
 └── games/
     └── <game-name>/      # every game in its own directory
         ├── index.html    # game page and rules
@@ -154,9 +170,10 @@ All paths are relative, so the site works both locally and under `/logic-puzzles
 2. Add a back link (`../../index.html`) and a short description of the rules in Polish.
 3. Hook the game up with `G.wire({ newGame, check, solve, reset })`. Base checking on the rules rather than on comparing with a stored solution.
 4. Optionally add an `edit` object (`params`, `hint`, `begin`, `play`) and the game gets a "Custom board" button.
-5. Include `assets/i18n.js`, `assets/pixel.js` and `assets/fx.js` before `common.js` – the game immediately gets a timer, records, a board link and the daily challenge.
+5. Include `assets/i18n.js`, `assets/pixel.js`, `assets/fx.js` and `assets/mobile.js` before `common.js`, plus `assets/mobile.css` – the game immediately gets a timer, records, a board link and the daily challenge.
 6. Add English translations of the new texts to `assets/i18n.js` (`EXACT`, `PATTERNS` and the `RULES` entry for the game's rules).
 7. Add the game card to the main `index.html` (and its category in `script.js`) and an entry in the tables above.
+8. Add the game's files to the `FILES` list in `sw.js` and bump `VERSION`, so it also works offline.
 
 ## 🌐 Hosting
 

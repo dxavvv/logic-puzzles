@@ -7,7 +7,7 @@ Bez instalacji, bez reklam, bez konta.
 
 [![Graj online](https://img.shields.io/badge/▶_Graj_online-dxavvv.github.io-5eb8f7?style=for-the-badge)](https://dxavvv.github.io/logic-puzzles/?lang=pl)
 
-![Gry](https://img.shields.io/badge/gry-23-5cdb8b) ![Technologia](https://img.shields.io/badge/HTML%20%7C%20CSS%20%7C%20JS-bez%20zależności-f0c060) ![Licencja](https://img.shields.io/badge/licencja-MIT-8899bb)
+![Gry](https://img.shields.io/badge/gry-26-5cdb8b) ![Technologia](https://img.shields.io/badge/HTML%20%7C%20CSS%20%7C%20JS-bez%20zależności-f0c060) ![Licencja](https://img.shields.io/badge/licencja-MIT-8899bb)
 
 🇵🇱 Polski · 🇬🇧 [English version](README.md)
 
@@ -24,7 +24,7 @@ Bez instalacji, bez reklam, bez konta.
 - 🎨 **Pikselowa oprawa** – ręcznie rysowane ikony w stylu pixel art, konfetti z pikseli po wygranej i cztery motywy kolorystyczne.
 - 🌐 **Polski i angielski** – język przełączysz jednym kliknięciem; strona sama wybiera język na podstawie ustawień przeglądarki i strefy czasowej (polski dla Polski, angielski poza nią) i zapamiętuje Twój wybór.
 - ✅ **Sprawdzanie według zasad** – każde poprawne rozwiązanie zostanie uznane, nie tylko to „wzorcowe”.
-- 📱 **Komputer i telefon** – układ dopasowuje się do ekranu, bez żadnej instalacji.
+- 📱 **Stworzone też dla telefonów** – zwarty układ, ekranowa klawiatura liczbowa zamiast systemowej, zwijane zasady, a stronę można zainstalować jak aplikację i grać offline (patrz [niżej](#-na-telefonie)).
 - 🔒 **Prywatnie** – wszystko dzieje się w Twojej przeglądarce; rekordy i ustawienia zapisują się tylko lokalnie (`localStorage`), nic nie jest nigdzie wysyłane.
 
 ## 🚀 Jak zacząć
@@ -79,6 +79,8 @@ Strona główna ma dodatkowo **wyszukiwarkę**, **filtry kategorii**, przycisk *
 
 | Gra | Zasady w skrócie |
 | --- | --- |
+| 🔵 **Binairo** | Wypełnij planszę niebieskimi i pomarańczowymi kółkami: po tyle samo w każdym wierszu i kolumnie, bez trzech takich samych obok siebie i bez identycznych linii. |
+| ⬛ **Hitori** | Zamaluj powtarzające się liczby tak, aby w wierszach i kolumnach zostały unikalne, zamalowane pola się nie stykały, a reszta tworzyła całość. |
 | 🖼️ **Obrazek logiczny** | Nonogram: zamaluj pola według liczb przy wierszach i kolumnach, aby odkryć obrazek. |
 | 🎨 **Mozaika** | Cyfra mówi, ile pól wokół niej (razem z nią) jest zamalowanych. |
 | 💣 **W sapera** | Zamalowane pola mają tworzyć jedną ścieżkę zgodną z cyframi. |
@@ -96,6 +98,7 @@ Strona główna ma dodatkowo **wyszukiwarkę**, **filtry kategorii**, przycisk *
 | 🗼 **Latarnie** | Każdy statek musi być oświetlony, a liczby przy latarniach muszą się zgadzać. |
 | ⭕ **Wielokropka** | Połącz kropki jedną pętlą tak, aby liczby mówiły, po ilu bokach kratki biegnie pętla. |
 | 💡 **Zgaś światła** | Kliknięcie lampki przełącza ją i jej sąsiadów. Zgaś wszystkie w jak najmniejszej liczbie ruchów. |
+| 🥞 **Wieże Hanoi** | Przenoś krążki między słupkami pojedynczo i nigdy większy na mniejszy. Liczy się jak najmniej ruchów; gra pokazuje wynik optymalny. |
 
 > Kolejne łamigłówki pojawiają się regularnie.
 
@@ -114,6 +117,14 @@ Większość gier ma przycisk **„✏️ Własna plansza”**, dzięki któremu
 - Dla własnych plansz przycisk „Rozwiąż” jest niedostępny (nie ma rozwiązania wzorcowego), ale **Sprawdź** nadal wskazuje błędy.
 - **Zgaś światła**, **Sudoku** i **OD (0) DO (9)** mają własne tryby: dowolny rozmiar, własny układ lampek, pusta plansza do wpisania własnych cyfr oraz edytowalne sumy.
 
+## 📱 Na telefonie
+
+- **Klawiatura liczbowa** – na ekranach dotykowych duża klawiatura ekranowa zastępuje systemową, więc nie zasłania planszy (włącza tylko cyfry dozwolone na danej planszy).
+- **Zwarty układ** – szeroka plansza, duże pola do stukania i pasek narzędzi sprowadzony do ikon; zbyt duże plansze przewijają się w bok, zamiast mieć maleńkie pola.
+- **Zasady, które nie przeszkadzają** – przy pierwszej wizycie w grze są rozwinięte, potem zwijają się do jednej linii (stuknij, aby rozwinąć).
+- **Instalacja** – wybierz „Dodaj do ekranu głównego” (lub „Zainstaluj aplikację” w Chrome), a strona otworzy się jak zwykła aplikacja na pełnym ekranie.
+- **Offline** – po pierwszej wizycie gry działają bez połączenia z internetem.
+
 ## 💻 Uruchomienie lokalne
 
 Projekt to czysty HTML, CSS i JavaScript – nie wymaga budowania ani zależności.
@@ -130,12 +141,17 @@ python -m http.server 8000   # następnie http://localhost:8000
 ```
 .
 ├── index.html            # strona główna z listą gier
+├── manifest.webmanifest  # opis aplikacji do zainstalowania
+├── sw.js                 # service worker: gra offline
 ├── assets/
 │   ├── base.css          # wspólne style gier
 │   ├── common.js         # wspólna biblioteka (obiekt G): plansze, generatory, edytor, ziarno planszy
 │   ├── pixel.js          # silnik pixel artu: sprite'y SVG zamiast emotek
 │   ├── fx.js             # czas, rekordy, konfetti, dźwięk, motywy
-│   └── i18n.js           # wersje językowe PL / EN
+│   ├── i18n.js           # wersje językowe PL / EN
+│   ├── mobile.css        # układ na telefon i klawiatura liczbowa
+│   ├── mobile.js         # klawiatura liczbowa, zwijane zasady, rejestracja service workera
+│   └── icons/            # ikony aplikacji (PWA)
 └── games/
     └── <nazwa-gry>/      # każda gra w osobnym katalogu
         ├── index.html    # strona gry i zasady
@@ -154,9 +170,10 @@ Wszystkie ścieżki są względne, więc strona działa zarówno lokalnie, jak i
 2. Dodaj link powrotu (`../../index.html`) oraz krótki opis zasad po polsku.
 3. Podłącz grę przez `G.wire({ newGame, check, solve, reset })`. Sprawdzanie warto oprzeć na regułach, nie na porównaniu z zapisanym rozwiązaniem.
 4. Opcjonalnie dodaj obiekt `edit` (`params`, `hint`, `begin`, `play`), a gra dostanie przycisk „Własna plansza”.
-5. Dołącz `assets/i18n.js`, `assets/pixel.js` i `assets/fx.js` przed `common.js` – gra od razu dostanie licznik, rekordy, link do planszy i wyzwanie dnia.
+5. Dołącz `assets/i18n.js`, `assets/pixel.js`, `assets/fx.js` i `assets/mobile.js` przed `common.js` oraz `assets/mobile.css` – gra od razu dostanie licznik, rekordy, link do planszy i wyzwanie dnia.
 6. Dodaj angielskie tłumaczenia nowych tekstów w `assets/i18n.js` (`EXACT`, `PATTERNS` oraz wpis `RULES` z zasadami gry).
 7. Dodaj kartę gry w głównym `index.html` (oraz kategorię w `script.js`) i wpis w tabeli powyżej.
+8. Dopisz pliki gry do listy `FILES` w `sw.js` i podbij `VERSION`, aby działała też offline.
 
 ## 🌐 Hosting
 
