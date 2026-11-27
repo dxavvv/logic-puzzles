@@ -1,0 +1,79 @@
+/* Usprawnienia dla telefonów i ekranów dotykowych (ładowane na wszystkich stronach). */
+* { -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+button, select, label, .cell, .chip, .fx-btn, .game-card, .rb-head { touch-action: manipulation; }
+
+/* wygodniejsze cele dotyku; 16 px w polach formularza wyłącza przybliżanie strony w iOS po dotknięciu pola */
+@media (pointer: coarse) {
+    input, select, textarea { font-size: 16px !important; }
+    button, select { min-height: 40px; }
+    .cell input { font-size: 1.15rem !important; }
+}
+
+/* zasady gry zwijane na telefonie */
+.rb-head { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+.rb-head::after { content: '▾'; color: var(--accent, #5eb8f7); padding-left: 8px; }
+.rb-collapsed .rb-head::after { content: '▸'; }
+.rb-collapsed ul { display: none; }
+@media (min-width: 521px) {
+    .rb-head { cursor: default; }
+    .rb-head::after { content: none; }
+    .rb-collapsed ul { display: block; }
+}
+
+/* wąskie ekrany: bezpieczne wyśrodkowanie (przy przewijaniu nie ucina lewej strony planszy) */
+.grid-wrapper { justify-content: safe center; -webkit-overflow-scrolling: touch; }
+
+@media (max-width: 520px) {
+    #fxSeedChip { display: none; }
+    body { padding: 8px 6px calc(10px + env(safe-area-inset-bottom)); }
+    .game-container { padding: 12px 10px 14px; gap: 10px; border-radius: 12px; }
+    h1 { font-size: 1.4rem; }
+    .rules-box { padding: 8px 12px; font-size: .8rem; }
+    .controls-row { gap: 6px; }
+    .controls-row button { flex: 1 1 42%; min-height: 42px; }
+    .controls-row label { font-size: .8rem; }
+    .board-grid, .freeboard { width: 100%; }
+    .cell { font-size: .95rem; }
+    .status-area { font-size: .82rem; }
+
+    /* pasek z czasem i dodatkami: ikony zamiast napisów */
+    .fx-bar { gap: 6px; margin: 4px auto; }
+    .fx-chip, .fx-btn { padding: 8px 9px; font-size: .78rem; }
+    .fx-btn.compact .fx-label { display: none; }
+    .fx-btn { min-height: 38px; }
+
+    /* edytor własnej planszy */
+    .edit-panel { padding: 10px; }
+    .edit-panel .controls-row label { width: 100%; justify-content: space-between; }
+
+    /* strona główna */
+    .home-container { padding: 52px 12px 24px; gap: 22px; }
+    header h1 { font-size: 1.7rem; }
+    .home-stats .stat { padding: 6px 9px; font-size: .78rem; }
+    .home-tools input[type=search] { max-width: none; flex-basis: 100%; }
+    .game-card { padding: 18px 14px; }
+    .card-icon .px { width: 46px; height: 46px; }
+    .home-float { top: 6px; right: 6px; gap: 6px; }
+    .home-float .chip { padding: 7px 9px; }
+    .home-float .lbl, .home-float .fx-label { display: none; }
+}
+
+/* ekranowa klawiatura liczbowa (telefony); natywna klawiatura zasłaniałaby planszę */
+.np {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: none;
+    grid-template-columns: repeat(6, 1fr); gap: 6px;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    background: var(--surface2, #1e1e3a); border-top: 2px solid var(--border, #2a2a50);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, .45);
+}
+.np.open { display: grid; }
+.np button {
+    min-height: 46px; font-size: 1.2rem; font-weight: 700; padding: 0; white-space: nowrap;
+    background: var(--surface, #161630); border: 2px solid var(--border, #2a2a50); border-radius: 0; color: var(--text, #d8d8e8);
+}
+.np button:active { background: var(--accent, #5eb8f7); color: #0d0d1a; transform: none; }
+.np button:disabled { opacity: .3; }
+.np .np-x { color: var(--error, #f87171); }
+.np .np-close { color: var(--text-secondary, #a0a0c0); }
+html.np-open body { padding-bottom: 150px; }

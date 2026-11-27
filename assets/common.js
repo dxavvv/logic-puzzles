@@ -57,7 +57,8 @@
             if (given) { d.className = 'cell given' + cls; d.textContent = given; return d; }
             d.className = 'cell empty' + cls;
             const i = document.createElement('input');
-            i.type = 'text'; i.inputMode = 'numeric'; i.maxLength = 1; i.autocomplete = 'off';
+            i.type = 'text'; i.inputMode = window.NumPad && NumPad.active ? 'none' : 'numeric'; i.maxLength = 1; i.autocomplete = 'off';
+            i.dataset.min = 1; i.dataset.max = max;
             if (value) i.value = value;
             i.addEventListener('input', () => {
                 const n = parseInt(i.value.replace(/[^0-9]/g, ''), 10);
@@ -130,7 +131,8 @@
             const d = document.createElement('div');
             d.className = 'cell empty edit ' + cls;
             const i = document.createElement('input');
-            i.type = 'text'; i.inputMode = 'numeric'; i.maxLength = String(max).length; i.autocomplete = 'off';
+            i.type = 'text'; i.inputMode = window.NumPad && NumPad.active ? 'none' : 'numeric'; i.maxLength = String(max).length; i.autocomplete = 'off';
+            i.dataset.min = min; i.dataset.max = max;
             if (ph) i.placeholder = ph;
             if (value !== empty && value != null) i.value = value;
             i.addEventListener('input', () => {
@@ -232,7 +234,7 @@
                 fx.addButton('📤', 'Udostępnij', () => {
                     if (G.custom) { fx.toast('✏️ Własnej planszy nie da się udostępnić linkiem'); return; }
                     fx.copy(G.shareUrl());
-                });
+                }, 'fxShare', true);
             }
             if (h.edit) G.setupEdit(h);
             h.newGame();

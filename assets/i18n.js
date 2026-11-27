@@ -243,7 +243,7 @@
         'Wpisz w polach liczby (ile pól widać z wieży: samo pole + pola w czterech kierunkach do zamalowanego). Puste pola zostaną do uzupełnienia.': 'Enter numbers in cells (how many cells are visible from the tower: the cell itself + cells in four directions up to a shaded one). Empty cells are left for the player.',
         'W polach wpisz liczbę zamalowanych sąsiadów (0–8), a dla kilku oddzielnych grup podaj je po separatorze, np. „2·1” lub „2.1”. Puste pole = bez cyfry.': 'Enter the number of shaded neighbours (0–8) in cells; for several separate groups give them with a separator, e.g. “2·1” or “2.1”. Empty = no digit.',
         // legendy / etykiety stron
-        'Zasady': 'Rules',
+        'Zasady': 'Rules', 'Motyw': 'Theme', 'Klawiatura liczbowa': 'Number pad',
         'Wygeneruj planszę lub stwórz pustą.': 'Generate a board or create an empty one.',
         'Flota': 'Fleet'
     };

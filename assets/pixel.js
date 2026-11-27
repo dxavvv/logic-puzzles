@@ -243,11 +243,6 @@
         new MutationObserver(list => {
             for (const m of list) m.addedNodes.forEach(n => convert(n));
         }).observe(document.body, { childList: true, subtree: true });
-        // ikona karty/strony w zakładce
-        const link = document.createElement('link');
-        link.rel = 'icon';
-        link.href = uri('puzzle').slice(5, -2).replace(/^/, '');
-        document.head.appendChild(link);
     }
 
     window.Px = { sprites: S, palette: PAL, emoji: E, uri, el, convert };

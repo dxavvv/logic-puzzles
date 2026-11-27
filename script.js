@@ -134,9 +134,9 @@
     if (window.FX) {
         const f = document.createElement('div');
         f.className = 'home-float';
-        f.innerHTML = '<button type="button" class="chip" id="fxSound">' + (FX.sound ? '🔊' : '🔇') + ' Dźwięk</button>' +
-            '<button type="button" class="chip" id="fxTheme">🎨 ' + FX.THEMES.find(t => t.id === (FX.store.get('lp:theme') || 'noc')).name + '</button>' +
-            (window.I18N ? '<button type="button" class="chip" id="fxLang">🌐 ' + (I18N.lang === 'en' ? 'Polski' : 'English') + '</button>' : '');
+        f.innerHTML = '<button type="button" class="chip" id="fxSound" aria-label="Dźwięk">' + (FX.sound ? '🔊' : '🔇') + '<span class="lbl"> Dźwięk</span></button>' +
+            '<button type="button" class="chip" id="fxTheme" aria-label="Motyw">🎨<span class="lbl"> ' + FX.THEMES.find(t => t.id === (FX.store.get('lp:theme') || 'noc')).name + '</span></button>' +
+            (window.I18N ? '<button type="button" class="chip" id="fxLang" aria-label="Language">🌐<span class="lbl"> ' + (I18N.lang === 'en' ? 'Polski' : 'English') + '</span></button>' : '');
         document.body.appendChild(f);
         document.getElementById('fxSound').addEventListener('click', () => FX.toggleSound());
         document.getElementById('fxTheme').addEventListener('click', () => FX.nextTheme());

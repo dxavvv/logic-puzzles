@@ -214,11 +214,16 @@ html[data-theme] body{background-image:radial-gradient(ellipse at 50% 0%,var(--s
 
         // --- pasek narzędzi ---
         bar: null,
-        addButton(icon, label, fn, id) {
+        // etykieta w osobnym <span>, żeby na telefonie dało się zostawić samą ikonę (compact)
+        setBtn(b, icon, label) {
+            b.innerHTML = icon + '<span class="fx-label"> ' + label + '</span>';
+            b.title = label; b.setAttribute('aria-label', label);
+        },
+        addButton(icon, label, fn, id, compact) {
             if (!FX.bar) return null;
             const b = document.createElement('button');
-            b.type = 'button'; b.className = 'fx-btn'; if (id) b.id = id;
-            b.textContent = icon + ' ' + label;
+            b.type = 'button'; b.className = 'fx-btn' + (compact ? ' compact' : ''); if (id) b.id = id;
+            FX.setBtn(b, icon, label);
             b.addEventListener('click', fn);
             FX.bar.appendChild(b);
             return b;
@@ -231,15 +236,15 @@ html[data-theme] body{background-image:radial-gradient(ellipse at 50% 0%,var(--s
             bar.innerHTML = '<span class="fx-chip">⏱ <b id="fxTime">00:00</b></span><span class="fx-chip">🏆 <b id="fxBest">—</b></span><span class="fx-chip" id="fxSeedChip" hidden></span>';
             anchor.parentNode.insertBefore(bar, anchor);
             FX.bar = bar;
-            FX.soundBtn = FX.addButton(FX.sound ? '🔊' : '🔇', 'Dźwięk', () => FX.toggleSound(), 'fxSound');
-            FX.themeBtn = FX.addButton('🎨', THEMES.find(t => t.id === themeId).name, () => FX.nextTheme(), 'fxTheme');
-            if (window.I18N) FX.addButton('🌐', I18N.lang === 'en' ? 'Polski' : 'English', () => FX.switchLang(), 'fxLang');
+            FX.soundBtn = FX.addButton(FX.sound ? '🔊' : '🔇', 'Dźwięk', () => FX.toggleSound(), 'fxSound', true);
+            FX.themeBtn = FX.addButton('🎨', THEMES.find(t => t.id === themeId).name, () => FX.nextTheme(), 'fxTheme', true);
+            if (window.I18N) FX.addButton('🌐', I18N.lang === 'en' ? 'Polski' : 'English', () => FX.switchLang(), 'fxLang', true);
         },
         toggleSound() {
             FX.sound = !FX.sound;
             store.set('lp:sound', FX.sound ? '1' : '0');
             const b = document.getElementById('fxSound');
-            if (b) b.textContent = (FX.sound ? '🔊' : '🔇') + ' Dźwięk';
+            if (b) FX.setBtn(b, FX.sound ? '🔊' : '🔇', 'Dźwięk');
             if (FX.sound) FX.blip();
         },
         nextTheme() {
@@ -248,7 +253,7 @@ html[data-theme] body{background-image:radial-gradient(ellipse at 50% 0%,var(--s
             store.set('lp:theme', themeId);
             applyTheme(themeId);
             const b = document.getElementById('fxTheme');
-            if (b) b.textContent = '🎨 ' + THEMES.find(t => t.id === themeId).name;
+            if (b) FX.setBtn(b, '🎨', THEMES.find(t => t.id === themeId).name);
         },
         // zmiana języka: odświeża stronę, ale zachowuje bieżącą planszę (ziarno)
         switchLang() {

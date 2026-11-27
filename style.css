@@ -223,4 +223,3 @@ header h1 {
 .no-results { grid-column: 1 / -1; text-align: center; color: var(--text-secondary); padding: 24px 0; }
 .home-float { position: fixed; top: 12px; right: 12px; z-index: 5; display: flex; gap: 8px; }
 .home-float .chip { padding: 7px 10px; }
-@media (max-width: 520px) { .home-float { position: static; justify-content: center; } }
